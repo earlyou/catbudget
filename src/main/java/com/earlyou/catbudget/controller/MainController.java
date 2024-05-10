@@ -9,7 +9,7 @@ public class MainController {
 
 	@GetMapping("/")
 	public String main(Model m) {
-		m.addAttribute("sidebar", "sidebar");
+		m.addAttribute("navbar", "navbar");
 		m.addAttribute("main", "main/main");
 		return "index";
 	}

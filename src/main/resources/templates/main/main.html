@@ -1,345 +1,205 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
 <head>
 <title th:fragment="title">고양이 공금 기록</title>
 </head>
-
-<header class="mb-3">
-	<a href="#" class="burger-btn d-block d-xl-none"> <i
-		class="bi bi-justify fs-3"></i>
-	</a>
-</header>
-
-<div class="page-heading">
-	<h3>Profile Statistics</h3>
-</div>
-<div class="page-content">
-	<section class="row">
-		<div class="col-12 col-lg-9">
-			<div class="row">
-				<div class="col-6 col-lg-3 col-md-6">
-					<div class="card">
-						<div class="card-body px-4 py-4-5">
-							<div class="row">
-								<div
-									class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
-									<div class="stats-icon purple mb-2">
-										<i class="iconly-boldShow"></i>
-									</div>
-								</div>
-								<div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-									<h6 class="text-muted font-semibold">Profile Views</h6>
-									<h6 class="font-extrabold mb-0">112.000</h6>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-6 col-lg-3 col-md-6">
-					<div class="card">
-						<div class="card-body px-4 py-4-5">
-							<div class="row">
-								<div
-									class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
-									<div class="stats-icon blue mb-2">
-										<i class="iconly-boldProfile"></i>
-									</div>
-								</div>
-								<div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-									<h6 class="text-muted font-semibold">Followers</h6>
-									<h6 class="font-extrabold mb-0">183.000</h6>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-6 col-lg-3 col-md-6">
-					<div class="card">
-						<div class="card-body px-4 py-4-5">
-							<div class="row">
-								<div
-									class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
-									<div class="stats-icon green mb-2">
-										<i class="iconly-boldAdd-User"></i>
-									</div>
-								</div>
-								<div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-									<h6 class="text-muted font-semibold">Following</h6>
-									<h6 class="font-extrabold mb-0">80.000</h6>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-6 col-lg-3 col-md-6">
-					<div class="card">
-						<div class="card-body px-4 py-4-5">
-							<div class="row">
-								<div
-									class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
-									<div class="stats-icon red mb-2">
-										<i class="iconly-boldBookmark"></i>
-									</div>
-								</div>
-								<div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-									<h6 class="text-muted font-semibold">Saved Post</h6>
-									<h6 class="font-extrabold mb-0">112</h6>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-12">
-					<div class="card">
-						<div class="card-header">
-							<h4>Profile Visit</h4>
-						</div>
-						<div class="card-body">
-							<div id="chart-profile-visit"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-12 col-xl-4">
-					<div class="card">
-						<div class="card-header">
-							<h4>Profile Visit</h4>
-						</div>
-						<div class="card-body">
-							<div class="row">
-								<div class="col-7">
-									<div class="d-flex align-items-center">
-										<svg class="bi text-primary" width="32" height="32"
-											fill="blue" style="width: 10px">
-                                            <use
-												xlink:href="assets/static/images/bootstrap-icons.svg#circle-fill" />
-                                        </svg>
-										<h5 class="mb-0 ms-3">Europe</h5>
-									</div>
-								</div>
-								<div class="col-5">
-									<h5 class="mb-0 text-end">862</h5>
-								</div>
-								<div class="col-12">
-									<div id="chart-europe"></div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-7">
-									<div class="d-flex align-items-center">
-										<svg class="bi text-success" width="32" height="32"
-											fill="blue" style="width: 10px">
-                                            <use
-												xlink:href="assets/static/images/bootstrap-icons.svg#circle-fill" />
-                                        </svg>
-										<h5 class="mb-0 ms-3">America</h5>
-									</div>
-								</div>
-								<div class="col-5">
-									<h5 class="mb-0 text-end">375</h5>
-								</div>
-								<div class="col-12">
-									<div id="chart-america"></div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-7">
-									<div class="d-flex align-items-center">
-										<svg class="bi text-success" width="32" height="32"
-											fill="blue" style="width: 10px">
-                                            <use
-												xlink:href="assets/static/images/bootstrap-icons.svg#circle-fill" />
-                                        </svg>
-										<h5 class="mb-0 ms-3">India</h5>
-									</div>
-								</div>
-								<div class="col-5">
-									<h5 class="mb-0 text-end">625</h5>
-								</div>
-								<div class="col-12">
-									<div id="chart-india"></div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-7">
-									<div class="d-flex align-items-center">
-										<svg class="bi text-danger" width="32" height="32" fill="blue"
-											style="width: 10px">
-                                            <use
-												xlink:href="assets/static/images/bootstrap-icons.svg#circle-fill" />
-                                        </svg>
-										<h5 class="mb-0 ms-3">Indonesia</h5>
-									</div>
-								</div>
-								<div class="col-5">
-									<h5 class="mb-0 text-end">1025</h5>
-								</div>
-								<div class="col-12">
-									<div id="chart-indonesia"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-12 col-xl-8">
-					<div class="card">
-						<div class="card-header">
-							<h4>Latest Comments</h4>
-						</div>
-						<div class="card-body">
-							<div class="table-responsive">
-								<table class="table table-hover table-lg">
-									<thead>
-										<tr>
-											<th>Name</th>
-											<th>Comment</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td class="col-3">
-												<div class="d-flex align-items-center">
-													<div class="avatar avatar-md">
-														<img src="./assets/compiled/jpg/5.jpg">
-													</div>
-													<p class="font-bold ms-3 mb-0">Si Cantik</p>
-												</div>
-											</td>
-											<td class="col-auto">
-												<p class=" mb-0">Congratulations on your graduation!</p>
-											</td>
-										</tr>
-										<tr>
-											<td class="col-3">
-												<div class="d-flex align-items-center">
-													<div class="avatar avatar-md">
-														<img src="./assets/compiled/jpg/2.jpg">
-													</div>
-													<p class="font-bold ms-3 mb-0">Si Ganteng</p>
-												</div>
-											</td>
-											<td class="col-auto">
-												<p class=" mb-0">Wow amazing design! Can you make
-													another tutorial for this design?</p>
-											</td>
-										</tr>
-										<tr>
-											<td class="col-3">
-												<div class="d-flex align-items-center">
-													<div class="avatar avatar-md">
-														<img src="./assets/compiled/jpg/8.jpg">
-													</div>
-													<p class="font-bold ms-3 mb-0">Singh Eknoor</p>
-												</div>
-											</td>
-											<td class="col-auto">
-												<p class=" mb-0">What a stunning design! You are so
-													talented and creative!</p>
-											</td>
-										</tr>
-										<tr>
-											<td class="col-3">
-												<div class="d-flex align-items-center">
-													<div class="avatar avatar-md">
-														<img src="./assets/compiled/jpg/3.jpg">
-													</div>
-													<p class="font-bold ms-3 mb-0">Rani Jhadav</p>
-												</div>
-											</td>
-											<td class="col-auto">
-												<p class=" mb-0">I love your design! It’s so beautiful
-													and unique! How did you learn to do this?</p>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+<div class="container mt-3">
+	<div class="row">
+		<div class="col-sm-11">
+			<h2>결제 내역 조회하기</h2>
+			<p>고앵이 루밍 유자 룽지 지미(?)</p>
 		</div>
-		<div class="col-12 col-lg-3">
-			<div class="card">
-				<div class="card-body py-4 px-4">
-					<div class="d-flex align-items-center">
-						<div class="avatar avatar-xl">
-							<img src="./assets/compiled/jpg/1.jpg" alt="Face 1">
-						</div>
-						<div class="ms-3 name">
-							<h5 class="font-bold">John Duck</h5>
-							<h6 class="text-muted mb-0">@johnducky</h6>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="card">
-				<div class="card-header">
-					<h4>Recent Messages</h4>
-				</div>
-				<div class="card-content pb-4">
-					<div class="recent-message d-flex px-4 py-3">
-						<div class="avatar avatar-lg">
-							<img src="./assets/compiled/jpg/4.jpg">
-						</div>
-						<div class="name ms-4">
-							<h5 class="mb-1">Hank Schrader</h5>
-							<h6 class="text-muted mb-0">@johnducky</h6>
-						</div>
-					</div>
-					<div class="recent-message d-flex px-4 py-3">
-						<div class="avatar avatar-lg">
-							<img src="./assets/compiled/jpg/5.jpg">
-						</div>
-						<div class="name ms-4">
-							<h5 class="mb-1">Dean Winchester</h5>
-							<h6 class="text-muted mb-0">@imdean</h6>
-						</div>
-					</div>
-					<div class="recent-message d-flex px-4 py-3">
-						<div class="avatar avatar-lg">
-							<img src="./assets/compiled/jpg/1.jpg">
-						</div>
-						<div class="name ms-4">
-							<h5 class="mb-1">John Dodol</h5>
-							<h6 class="text-muted mb-0">@dodoljohn</h6>
-						</div>
-					</div>
-					<div class="px-4">
-						<button
-							class='btn btn-block btn-xl btn-outline-primary font-bold mt-3'>Start
-							Conversation</button>
-					</div>
-				</div>
-			</div>
-			<div class="card">
-				<div class="card-header">
-					<h4>Visitors Profile</h4>
-				</div>
-				<div class="card-body">
-					<div id="chart-visitors-profile"></div>
-				</div>
-			</div>
-		</div>
-	</section>
-</div>
 
-<footer>
-	<div class="footer clearfix mb-0 text-muted">
-		<div class="float-start">
-			<p>2023 &copy; Mazer</p>
-		</div>
-		<div class="float-end">
-			<p>
-				Crafted with <span class="text-danger"><i
-					class="bi bi-heart-fill icon-mid"></i></span> by <a
-					href="https://saugi.me">Saugi</a>
-			</p>
+		<div class="col-sm-1">
+			<select class="form-select mt-5 mb-1" id="sel1" name="sellist1">
+				<option>10</option>
+				<option>20</option>
+				<option>50</option>
+				<option>100</option>
+			</select>
 		</div>
 	</div>
-</footer>
+
+	<table class="table table-hover">
+		<thead class="table-info">
+			<tr>
+				<th>날짜</th>
+				<th>내역</th>
+				<th>금액</th>
+				<th>영수증</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>2024.05.10</td>
+				<td>
+					<button type="button" class="btn btn-link" data-bs-toggle="modal"
+						data-bs-target="#readonly">활성탄</button>
+				</td>
+				<td>38,400</td>
+				<td>
+					<button type="button" class="btn btn-info" data-bs-toggle="modal"
+						data-bs-target="#openimg">보기</button>
+				</td>
+			</tr>
+			<tr>
+				<td>2024.04.30</td>
+				<td>
+					<button type="button" class="btn btn-link" data-bs-toggle="modal"
+						data-bs-target="#modify">(주)제이엘씨엔티</button>
+				</td>
+				<td>52,500</td>
+				<td><button type="button" class="btn btn-info">보기</button></td>
+			</tr>
+			<tr>
+				<td>2024.04.15</td>
+				<td>
+					<button type="button" class="btn btn-link">쿠팡(쿠페이)</button>
+				</td>
+				<td>43,950</td>
+				<td><button type="button" class="btn btn-info">보기</button></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<ul class="pagination">
+		<li class="page-item"><a class="page-link" href="#">Previous</a></li>
+		<li class="page-item active"><a class="page-link" href="#">1</a></li>
+		<li class="page-item"><a class="page-link" href="#">2</a></li>
+		<li class="page-item"><a class="page-link" href="#">3</a></li>
+		<li class="page-item"><a class="page-link" href="#">Next</a></li>
+	</ul>
+</div>
+
+<!-- read only modal -->
+<div class="modal fade" id="readonly">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<h4 class="modal-title">상세 보기</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			</div>
+
+			<!-- Modal body -->
+			<div class="container mt-3">
+				<form action="/action_page.php">
+					<div class="mb-3 mt-3">
+						<label for="date">날짜:</label> <input type="date"
+							class="form-control" id="date" placeholder="날짜" name="date"
+							value="2024-05-10" readonly>
+					</div>
+					<div class="mb-3">
+						<label for="detail">내역:</label> <input type="text"
+							class="form-control" id="detail" placeholder="결제 내역"
+							name="detail" value="활성탄" readonly>
+					</div>
+					<div class="mb-3">
+						<label for="price">금액:</label> <input type="number"
+							class="form-control" id="price" placeholder="금액" name="price"
+							value="38400" readonly>
+					</div>
+					<div class="mb-3">
+						<label for="bill">영수증:</label>
+						<p></p>
+						<img
+							src="https://previews.123rf.com/images/yupiramos/yupiramos1703/yupiramos170312447/74389048-%EA%B7%80%EC%97%AC%EC%9A%B4-%EC%9E%91%EC%9D%80-%EC%83%88-%EC%95%84%EC%9D%B4%EC%BD%98-%EB%B2%A1%ED%84%B0-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-%EB%A0%88%EC%9D%B4-%EC%85%98-%EB%94%94%EC%9E%90%EC%9D%B8.jpg"
+							class="mx-auto d-block img-thumbnail" alt="Cinque Terre"
+							width="304" height="236">
+					</div>
+					<button type="submit" class="btn btn-primary mb-2">수정하기</button>
+				</form>
+			</div>
+
+			<!-- Modal footer -->
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success">확인</button>
+				<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<!-- modify modal -->
+<div class="modal fade" id="modify">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<h4 class="modal-title">상세 보기</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			</div>
+
+			<!-- Modal body -->
+			<div class="container mt-3">
+				<form action="/action_page.php">
+					<div class="mb-3 mt-3">
+						<label for="date">날짜:</label> <input type="date"
+							class="form-control" id="date" placeholder="날짜" name="date"
+							value="2024-04-30">
+					</div>
+					<div class="mb-3">
+						<label for="detail">내역:</label> <input type="text"
+							class="form-control" id="detail" placeholder="결제 내역"
+							name="detail" value="활성탄">
+					</div>
+					<div class="mb-3">
+						<label for="price">금액:</label> <input type="number"
+							class="form-control" id="price" placeholder="금액" name="price"
+							value="38400">
+					</div>
+					<div class="mb-3">
+						<label for="bill">영수증:</label>
+						<p></p>
+						<img
+							src="https://previews.123rf.com/images/yupiramos/yupiramos1703/yupiramos170312447/74389048-%EA%B7%80%EC%97%AC%EC%9A%B4-%EC%9E%91%EC%9D%80-%EC%83%88-%EC%95%84%EC%9D%B4%EC%BD%98-%EB%B2%A1%ED%84%B0-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-%EB%A0%88%EC%9D%B4-%EC%85%98-%EB%94%94%EC%9E%90%EC%9D%B8.jpg"
+							class="mx-auto d-block img-thumbnail" alt="Cinque Terre"
+							width="304" height="236">
+					</div>
+					<button type="submit" class="btn btn-primary mb-2">저장하기</button>
+				</form>
+			</div>
+
+			<!-- Modal footer -->
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success">확인</button>
+				<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<!-- open image modal -->
+<div class="modal fade" id="openimg">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<h4 class="modal-title">상세 보기</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			</div>
+
+			<!-- Modal body -->
+			<div class="container mt-3">
+				<div class="mb-3">
+					<img
+						src="https://previews.123rf.com/images/yupiramos/yupiramos1703/yupiramos170312447/74389048-%EA%B7%80%EC%97%AC%EC%9A%B4-%EC%9E%91%EC%9D%80-%EC%83%88-%EC%95%84%EC%9D%B4%EC%BD%98-%EB%B2%A1%ED%84%B0-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-%EB%A0%88%EC%9D%B4-%EC%85%98-%EB%94%94%EC%9E%90%EC%9D%B8.jpg"
+						class="mx-auto d-block img-thumbnail" alt="Cinque Terre"
+						width="912" height="708">
+				</div>
+			</div>
+
+			<!-- Modal footer -->
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+			</div>
+
+		</div>
+	</div>
+</div>
 </html>
