@@ -18,7 +18,7 @@ public class UserinfoVO {
 	// Fields
 	private String uid;
 	private String pwd;
-	private boolean del;
+	private Boolean del;
 	private Date dd;
 	
 	
