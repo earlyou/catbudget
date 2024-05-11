@@ -1,7 +1,5 @@
 package com.earlyou.catbudget.vo;
 
-import java.sql.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,12 +17,11 @@ public class UserinfoVO {
 	private String uid;
 	private String pwd;
 	private Boolean del;
-	private Date dd;
-	
-	
+	private String dd;
+
 	// Constructors
 	/*
-	 *  for pwd update
+	 * for pwd update
 	 */
 	public UserinfoVO(String uid, String pwd) {
 		super();
@@ -33,9 +30,9 @@ public class UserinfoVO {
 	}
 
 	/*
-	 *  for deleting a account
+	 * for deleting an account
 	 */
-	public UserinfoVO(String uid, boolean del, Date dd) {
+	public UserinfoVO(String uid, boolean del, String dd) {
 		super();
 		this.uid = uid;
 		this.del = del;
