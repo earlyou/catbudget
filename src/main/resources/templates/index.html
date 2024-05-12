@@ -11,7 +11,8 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-	
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+
 <script src="https://kit.fontawesome.com/ada5d00ac9.js"
 	crossorigin="anonymous"></script>
 </head>
@@ -31,4 +32,13 @@
 	<div th:replace="~{${footer} ? ${footer} : footer}"></div>
 
 </body>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var session = /*[[${session}]]*/'';
+    /*]]>*/
+</script>
+
+<script th:inline="javascript" th:src="@{assets/js/index.js}"></script>
+
 </html>

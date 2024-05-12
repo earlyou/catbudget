@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:fragment="title">로그인</title>
+</head>
+
+<div class="row">
+	<div class="col"></div>
+	<div class="col container mt-3">
+		<h2>로그인</h2>
+		<form action="loginimpl" id="login_form" method="POST">
+			<div class="form-floating mb-3 mt-3">
+				<input type="text" class="form-control" id="uid"
+					placeholder="아이디" name="uid"> <label for="uid">아이디</label>
+			</div>
+			<div class="form-floating mt-3 mb-3">
+				<input type="password" class="form-control" id="pwd"
+					placeholder="비밀번호" name="pwd"> <label for="pwd">비밀번호</label>
+			</div>
+			<button type="submit" class="btn btn-primary">로그인</button>
+		</form>
+	</div>
+	<div class="col"></div>
+</div>
+</html>
