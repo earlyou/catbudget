@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.earlyou.catbudget.biz.UserinfoBiz;
 import com.earlyou.catbudget.vo.UserinfoVO;
@@ -19,22 +20,32 @@ public class MainController {
 	UserinfoBiz userinfobiz;
 
 	@GetMapping("/")
-	public String main(Model m, HttpSession session) {
-		if (session.getAttribute("loginuser") == null) {
-			m.addAttribute("main", "auth/login");
+	public String main(Model m, HttpSession s, RedirectAttributes r) {
+		if (s.getAttribute("loginuser") == null) {
+			
+			// m.addAttribute와 비슷하지만 POST방식이며 1회성이라 새로고침하면 데이터 소멸
+			r.addFlashAttribute("v", "n");
+			
+			return "redirect:/login";
 		} else {
 			m.addAttribute("main", "main/main");
-			m.addAttribute("session", session.getAttribute("loginuser"));
+			m.addAttribute("session", s.getAttribute("loginuser"));
 		}
 		m.addAttribute("navbar", "navbar");
 		return "index";
 	}
 
 	@GetMapping("/login")
-	public String login(Model m, @RequestParam("msg") String msg) {
-		if (msg != null && msg.equals("f")) {
-			m.addAttribute("msg", "회원정보를 확인해주세요");
+	public String login(Model m, HttpSession s) {
+		
+		if (s.getAttribute("loginuser") == null) {
+			if (m.getAttribute("v") == null) {
+				m.addAttribute("v", "n");
+			}
+		} else {
+			return "redirect:/";
 		}
+		
 		m.addAttribute("sidebar", "sidebar");
 		m.addAttribute("main", "auth/login");
 		return "index";
@@ -42,14 +53,15 @@ public class MainController {
 
 	@PostMapping("/loginimpl")
 	public String register(Model m, @RequestParam("uid") String uid, @RequestParam("pwd") String pwd,
-			HttpSession session) {
+			HttpSession s, RedirectAttributes r) {
+		
 		UserinfoVO user = null;
 
 		try {
 			user = userinfobiz.get(uid);
 			if (user != null) {
 				if (user.getPwd().equals(pwd)) {
-					session.setAttribute("loginuser", user);
+					s.setAttribute("loginuser", user);
 					m.addAttribute("loginuser", user);
 				} else {
 					throw new Exception();
@@ -58,7 +70,8 @@ public class MainController {
 				throw new Exception();
 			}
 		} catch (Exception e) {
-			return "redirect:/?msg=f";
+			r.addFlashAttribute("v", "f");
+			return "redirect:/login";
 		}
 		return "redirect:/";
 	}

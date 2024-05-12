@@ -3,6 +3,5 @@
  */
 
 $(document).ready(function() {
-	console.log('test');
-	console.log(session.loginuser);
+	console.log('session: ' + session.loginuser);
 });
