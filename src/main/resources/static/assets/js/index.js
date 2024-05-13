@@ -3,5 +3,6 @@
  */
 
 $(document).ready(function() {
-	console.log('session: ' + session.loginuser);
+	var session = '<%=(String)session.getAttribute("admin")%>';
+	console.log('session: ' + session);
 });

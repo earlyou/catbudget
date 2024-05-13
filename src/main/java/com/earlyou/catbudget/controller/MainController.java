@@ -21,16 +21,15 @@ public class MainController {
 
 	@GetMapping("/")
 	public String main(Model m, HttpSession s, RedirectAttributes r) {
-		if (s.getAttribute("loginuser") == null) {
+		if (s.getAttribute("session") == null) {
 			
 			// m.addAttribute와 비슷하지만 POST방식이며 1회성이라 새로고침하면 데이터 소멸
 			r.addFlashAttribute("v", "n");
 			
 			return "redirect:/login";
 		} else {
-			System.out.println(s.getAttribute("loginuser"));
+			System.out.println(s.getAttribute("session"));
 			m.addAttribute("main", "main/main");
-			m.addAttribute("session", s.getAttribute("loginuser"));
 		}
 		return "index";
 	}
@@ -60,8 +59,7 @@ public class MainController {
 			user = userinfobiz.get(uid);
 			if (user != null) {
 				if (user.getPwd().equals(pwd) && user.getDel().equals(false)) {
-					s.setAttribute("loginuser", user);
-					m.addAttribute("loginuser", user);
+					s.setAttribute("session", user);
 				} else {
 					throw new Exception();
 				}
