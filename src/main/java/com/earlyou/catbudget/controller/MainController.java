@@ -28,10 +28,10 @@ public class MainController {
 			
 			return "redirect:/login";
 		} else {
+			System.out.println(s.getAttribute("loginuser"));
 			m.addAttribute("main", "main/main");
 			m.addAttribute("session", s.getAttribute("loginuser"));
 		}
-		m.addAttribute("navbar", "navbar");
 		return "index";
 	}
 
@@ -46,7 +46,6 @@ public class MainController {
 			return "redirect:/";
 		}
 		
-		m.addAttribute("sidebar", "sidebar");
 		m.addAttribute("main", "auth/login");
 		return "index";
 	}
@@ -60,7 +59,7 @@ public class MainController {
 		try {
 			user = userinfobiz.get(uid);
 			if (user != null) {
-				if (user.getPwd().equals(pwd)) {
+				if (user.getPwd().equals(pwd) && user.getDel().equals(false)) {
 					s.setAttribute("loginuser", user);
 					m.addAttribute("loginuser", user);
 				} else {

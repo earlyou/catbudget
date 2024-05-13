@@ -40,4 +40,8 @@ public class PaymentBiz implements Biz<Integer, PaymentVO> {
 		return dao.selectall();
 	}
 
+	public List<PaymentVO> getbyuid() throws Exception {
+		return dao.selectbyuid();
+	}
+	
 }
