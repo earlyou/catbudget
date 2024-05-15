@@ -25,7 +25,7 @@ public class PaymentVO {
 	private Boolean del;
 	private String dd;
 	
-	// Constructor
+	// Constructors
 	/**
 	 * for Insert
 	 */

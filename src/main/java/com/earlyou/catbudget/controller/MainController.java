@@ -41,11 +41,11 @@ public class MainController {
 				String uid = s.getAttribute("uid").toString();
 				list = pbiz.getbyuid(uid);
 				m.addAttribute("listsize", list.size());
+				
 			} catch (Exception e) {
 				m.addAttribute("main", "main/main");
 				return "index";
 			}
-			System.out.println(s.getAttribute("uid"));
 		}
 		m.addAttribute("main", "main/main");
 		return "index";
