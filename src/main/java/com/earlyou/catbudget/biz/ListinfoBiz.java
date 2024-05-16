@@ -18,4 +18,8 @@ public class ListinfoBiz {
 	public List<PaymentVO> getbypage(ListinfoVO v) throws Exception {
 		return dao.selectbypage(v);
 	}
+	
+	public List<PaymentVO> getbydate(ListinfoVO v) throws Exception {
+		return dao.selectbydate(v);
+	}
 }

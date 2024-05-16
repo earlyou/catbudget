@@ -2,10 +2,26 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <title th:fragment="title">고양이 공금 기록</title>
+
+<!-- date picker -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"
+	integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css"
+	integrity="sha512-34s5cpvaNG3BknEWSuOncX28vz97bRI59UnVtEEpFX536A7BtZSJHsDyFoCl8S7Dt2TPzcrCEoHBGeM4SUBDBw=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/locales/bootstrap-datepicker.ko.min.js"
+	integrity="sha512-L4qpL1ZotXZLLe8Oo0ZyHrj/SweV7CieswUODAAPN/tnqN3PA1P+4qPu5vIryNor6HQ5o22NujIcAZIfyVXwbQ=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 </head>
+
 <div class="container mt-3" id="maindiv">
 	<div class="row">
-		<div class="col-sm-10">
+		<div class="col-sm-8">
 			<h2>결제 내역 조회하기</h2>
 			<p>고앵이 루밍 유자 룽지 지미(?)</p>
 		</div>
@@ -18,22 +34,37 @@
 				<option value="100">100</option>
 			</select>
 		</div>
-		<div class="col-sm-1">
-			<input type="date" class="form-control mt-5 mb-1" id="date" placeholder="날짜" name="date" value="2024-05-10">
+		<div class="col-sm-3">
+
+			<div class="input-daterange input-group mt-5 mb-1" id="datepicker">
+				<input type="text" class="input-sm form-control" name="start" />
+				<i style='font-size:24px;color:green;' class='far mt-2 m-1'>&#xf272;</i>
+				<input type="text" class="input-sm form-control" name="end" />
+			</div>
+			<!-- 
+			<input type="date" class="form-control mt-5 mb-1" id="searchdate"
+				placeholder="날짜" name="searchdate" value="2024-05-10"> 
+			-->
 		</div>
 	</div>
 
-	<table class="table table-hover">
-		<thead class="table-info">
+	<table class="table table-hover table-bordered table-striped">
+		<thead class="table-success">
 			<tr>
-				<th><button type="button" class="btn btn-link">
+				<th class="text-center col-1"><button type="button"
+						class="btn btn-link" disabled>번호</button></th>
+				<th class="text-center"><button type="button"
+						class="btn btn-link">
 						날짜 <i class='fas fa-caret-down'></i>
 					</button></th>
-				<th><button type="button" class="btn btn-link" disabled>내역</button></th>
-				<th><button type="button" class="btn btn-link">
+				<th class="text-center"><button type="button"
+						class="btn btn-link" disabled>내역</button></th>
+				<th class="text-center"><button type="button"
+						class="btn btn-link">
 						금액 <i class='fas fa-caret-down'></i>
 					</button></th>
-				<th><button type="button" class="btn btn-link" disabled>영수증</button></th>
+				<th class="text-center"><button type="button"
+						class="btn btn-link" disabled>영수증</button></th>
 			</tr>
 		</thead>
 		<tbody id="paymentinfo">
@@ -48,23 +79,6 @@
 					<button type="button" class="btn btn-info" data-bs-toggle="modal"
 						data-bs-target="#openimg">보기</button>
 				</td>
-			</tr>
-			<tr class="listinfo">
-				<td>2024.04.30</td>
-				<td>
-					<button type="button" class="btn btn-link" data-bs-toggle="modal"
-						data-bs-target="#modify">(주)제이엘씨엔티</button>
-				</td>
-				<td>52,500</td>
-				<td><button type="button" class="btn btn-info">보기</button></td>
-			</tr>
-			<tr class="listinfo">
-				<td>2024.04.15</td>
-				<td>
-					<button type="button" class="btn btn-link">쿠팡(쿠페이)</button>
-				</td>
-				<td>43,950</td>
-				<td><button type="button" class="btn btn-info">보기</button></td>
 			</tr>
 		</tbody>
 	</table>
