@@ -31,4 +31,20 @@ public class AjaxController {
 		return list;
 	}
 
+	@GetMapping("reqlistbydate")
+	public Object reqlistbydate(@RequestParam("uid") String uid, @RequestParam("startdate") String startdate,
+			@RequestParam("enddate") String enddate, @RequestParam("sin") int sin, @RequestParam("ipp") int ipp,
+			Model m) {
+		List<PaymentVO> list = null;
+		ListinfoVO listinfo = new ListinfoVO(uid, startdate, enddate, sin, ipp);
+
+		try {
+			list = lbiz.getbydate(listinfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
 }

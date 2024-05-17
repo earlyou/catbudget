@@ -4,16 +4,37 @@
 
 $(document).ready(function() {
 
+	$('#startdate').datepicker({
+		format: 'yyyy-mm-dd',
+		todayBtn: "linked",
+		clearBtn: true,
+		language: "ko",
+		autoclose: true,
+		todayHighlight: true
+	});
+	
 	$('#datepicker').datepicker({
 		format: 'yyyy-mm-dd',
 		todayBtn: 'linked',
 		clearBtn: true,
 		language: 'ko',
 		todayHighlight: true
-	}).on('changeDate', function(e) {
-		console.log(e.date.toISOString().substring(0, 10));
-		console.log(e);
 	});
+
+
+	$('#enddate').datepicker({
+		format: 'yyyy-mm-dd',
+		todayBtn: "linked",
+		clearBtn: true,
+		language: "ko",
+		todayHighlight: true
+	}).on('changeDate', function() {
+		console.log('start date: '+$('#startdate').val());
+		console.log('end date: '+$('#enddate').val());
+		
+		
+	});
+
 
 	/** 현재날짜 입력 */
 	$('#searchdate').val(new Date().toISOString().substring(0, 10));
@@ -43,9 +64,6 @@ $(document).ready(function() {
 		ipp = $('#ipp').val();
 		sin = (parseInt($('.page-num.active').children().html()) - 1) * ipp;
 		reqlist(uid, sin, ipp);
-		
-		console.log($('#datepicker').datepicker('getStartDate'));
-		console.log($('#datepicker').datepicker('getEndDate'));
 	});
 
 	/** '이전 페이지' 버튼 클릭 이벤트 */
@@ -100,11 +118,6 @@ $(document).ready(function() {
 			sin = (parseInt($('.page-num.active').children().html()) - 1) * ipp;
 			reqlist(uid, sin, ipp);
 		});
-	});
-
-	$('#searchdate').change(function() {
-
-		console.log(e);
 	});
 
 });
@@ -190,6 +203,20 @@ function reqlist(uid, sin, ipp) {
 					'</div>'
 				);
 			});
+		}
+	});
+};
+
+function reqlistbydate(uid, startdate, enddate, sin, ipp) {
+	$.ajax({
+		url: '/catbudget/reqlistbydate',
+		data: { 'uid': uid, 'startdate':startdate, 'enddate':enddate, 'sin': sin, 'ipp': ipp },
+		success: function(data) {
+			console.log('uid: ' + uid);
+			console.log('startdate: ' + startdate);
+			console.log('enddate: ' + enddate);
+			console.log('sin: ' + sin);
+			console.log('ipp: ' + ipp);
 		}
 	});
 };

@@ -15,7 +15,8 @@ public class ListinfoVO {
 
 	// Fields
 	private String uid;
-	private String regdate;
+	private String startdate;
+	private String enddate;
 	private int sin;		// start item number
 	private int ipp;		// items per page
 	
