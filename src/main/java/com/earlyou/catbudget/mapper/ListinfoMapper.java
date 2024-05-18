@@ -13,4 +13,5 @@ import com.earlyou.catbudget.vo.PaymentVO;
 public interface ListinfoMapper {
 	public List<PaymentVO> selectbypage(ListinfoVO obj) throws Exception;
 	public List<PaymentVO> selectbydate(ListinfoVO obj) throws Exception;
+	public int selectlength(ListinfoVO obj) throws Exception;
 }

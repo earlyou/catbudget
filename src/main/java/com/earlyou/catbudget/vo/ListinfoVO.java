@@ -30,4 +30,15 @@ public class ListinfoVO {
 		this.sin = sin;
 		this.ipp = ipp;
 	}
+
+	/**
+	 * for getlength
+	 */
+	public ListinfoVO(String uid, String startdate, String enddate) {
+		super();
+		this.uid = uid;
+		this.startdate = startdate;
+		this.enddate = enddate;
+	}
+	
 }

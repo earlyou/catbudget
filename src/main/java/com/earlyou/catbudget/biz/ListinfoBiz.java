@@ -22,4 +22,8 @@ public class ListinfoBiz {
 	public List<PaymentVO> getbydate(ListinfoVO v) throws Exception {
 		return dao.selectbydate(v);
 	}
+	
+	public int getlength(ListinfoVO v) throws Exception {
+		return dao.selectlength(v);
+	}
 }
