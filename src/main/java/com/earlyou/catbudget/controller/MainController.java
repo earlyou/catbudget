@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.earlyou.catbudget.biz.PaymentBiz;
 import com.earlyou.catbudget.biz.UserinfoBiz;
@@ -27,7 +29,11 @@ public class MainController {
 	PaymentBiz pbiz;
 
 	@GetMapping("/")
-	public String main(Model m, HttpSession s, RedirectAttributes r) {
+	public String main(Model m, HttpSession s, RedirectAttributes r, @ModelAttribute String test,
+			@ModelAttribute String test1) {
+		System.out.println(test);
+		System.out.println(test1);
+
 		if (s.getAttribute("uid") == null) {
 
 			// m.addAttribute와 비슷하지만 POST방식이며 1회성이라 새로고침하면 데이터 소멸
@@ -41,7 +47,7 @@ public class MainController {
 				String uid = s.getAttribute("uid").toString();
 				list = pbiz.getbyuid(uid);
 				m.addAttribute("listsize", list.size());
-				
+
 			} catch (Exception e) {
 				m.addAttribute("main", "main/main");
 				return "index";
@@ -67,7 +73,7 @@ public class MainController {
 	}
 
 	@PostMapping("/loginimpl")
-	public String register(Model m, @RequestParam("uid") String uid, @RequestParam("pwd") String pwd, HttpSession s,
+	public RedirectView register(Model m, @RequestParam("uid") String uid, @RequestParam("pwd") String pwd, HttpSession s,
 			RedirectAttributes r) {
 
 		UserinfoVO userinfo = null;
@@ -85,8 +91,12 @@ public class MainController {
 			}
 		} catch (Exception e) {
 			r.addFlashAttribute("v", "f");
-			return "redirect:/login";
+//			return "redirect:/login";
+			return new RedirectView("/login");
 		}
-		return "redirect:/";
+		r.addAttribute("tt", "test");
+		r.addAttribute("test1", "test1");
+		return new RedirectView("/catbudget");
+//		return "redirect:/";
 	}
 }
