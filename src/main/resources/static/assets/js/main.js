@@ -250,11 +250,10 @@ function reqlist(uid, sin, ipp) {
 					'</div>' +
 					'</div>' +
 					'</div>' +
-					'<button type="submit" class="btn btn-primary mb-2">수정하기</button>' +
 					'</form>' +
 					'</div>' +
 					'<div class="modal-footer">' +
-					'<button type="button" class="btn btn-success">확인</button>' +
+					'<button type="button" class="btn btn-success">수정</button>' +
 					'<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>' +
 					'</div>' +
 					'</div>' +
@@ -374,11 +373,10 @@ function initreqlistbydate(uid, startdate, enddate, sin, ipp) {
 					'</div>' +
 					'</div>' +
 					'</div>' +
-					'<button type="submit" class="btn btn-primary mb-2">수정하기</button>' +
 					'</form>' +
 					'</div>' +
 					'<div class="modal-footer">' +
-					'<button type="button" class="btn btn-success">확인</button>' +
+					'<button type="button" class="btn btn-success">수정</button>' +
 					'<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>' +
 					'</div>' +
 					'</div>' +
@@ -467,11 +465,10 @@ function reqlistbydate(uid, startdate, enddate, sin, ipp) {
 					'</div>' +
 					'</div>' +
 					'</div>' +
-					'<button type="submit" class="btn btn-primary mb-2">수정하기</button>' +
 					'</form>' +
 					'</div>' +
 					'<div class="modal-footer">' +
-					'<button type="button" class="btn btn-success">확인</button>' +
+					'<button type="button" class="btn btn-success">수정</button>' +
 					'<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>' +
 					'</div>' +
 					'</div>' +
