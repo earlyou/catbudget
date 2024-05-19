@@ -134,44 +134,47 @@ $(document).ready(function() {
 
 	/** 페이지당 데이터 개수 변경 시 이벤트 */
 	$('#ipp').change(function() {
-		ipp = $('#ipp').val();
-		lastpage = Math.ceil(listsize / ipp);
-		$('.page-num').remove();
-		for (var i = 1; i <= lastpage; i++) {
-			$('#nextpage').before('<li class="page-num" id="page' + i + '"><a class="page-link" href="#">' + i + '</a></li>');
-		}
-		$('#page1').addClass('active');
-		$('#prevpage').addClass('disabled');
-		dpi(lastpage);
 
-		sin = (parseInt($('.page-num.active').children().html()) - 1) * ipp;
+		ipp = $('#ipp').val();
 
 		if (startdate != '' && enddate != '') {
-			reqlistbydate(uid, startdate, enddate, sin, ipp);
+			initreqlistbydate(uid, startdate, enddate, sin, ipp);
 		} else {
+			lastpage = Math.ceil(listsize / ipp);
+			$('.page-num').remove();
+			for (var i = 1; i <= lastpage; i++) {
+				$('#nextpage').before('<li class="page-num" id="page' + i + '"><a class="page-link" href="#">' + i + '</a></li>');
+			}
+			$('#page1').addClass('active');
+			$('#prevpage').addClass('disabled');
+			dpi(lastpage);
+
+			sin = (parseInt($('.page-num.active').children().html()) - 1) * ipp;
+
 			reqlist(uid, sin, ipp);
+
+			/** page번호 클릭 이벤트 */
+			$('.page-num').on('click', function() {
+				if (startdate != '' && enddate != '') {
+					$('.page-num').removeClass('active');
+					$(this).addClass('active');
+					dpi(lastpage);
+
+					sin = (parseInt($('.page-num.active').children().html()) - 1) * ipp;
+					reqlistbydate(uid, startdate, enddate, sin, ipp);
+				} else {
+					$('.page-num').removeClass('active');
+					$(this).addClass('active');
+					dpi(lastpage);
+
+					ipp = $('#ipp').val();
+					sin = (parseInt($('.page-num.active').children().html()) - 1) * ipp;
+					reqlist(uid, sin, ipp);
+				}
+			});
 		}
 
-		/** page번호 클릭 이벤트 */
-		$('.page-num').on('click', function() {
-			if (startdate != '' && enddate != '') {
-				$('.page-num').removeClass('active');
-				$(this).addClass('active');
-				dpi(lastpage);
 
-				ipp = $('#ipp').val();
-				sin = (parseInt($('.page-num.active').children().html()) - 1) * ipp;
-				reqlistbydate(uid, startdate, enddate, sin, ipp);
-			} else {
-				$('.page-num').removeClass('active');
-				$(this).addClass('active');
-				dpi(lastpage);
-
-				ipp = $('#ipp').val();
-				sin = (parseInt($('.page-num.active').children().html()) - 1) * ipp;
-				reqlist(uid, sin, ipp);
-			}
-		});
 	});
 
 });
@@ -197,7 +200,7 @@ function reqlist(uid, sin, ipp) {
 		data: { 'uid': uid, 'sin': sin, 'ipp': ipp },
 		success: function(data) {
 			$('tr').remove('.listinfo');
-			$('.modal.fade').remove();
+			$('.modal.fade.detail').remove();
 
 			$.each(data, function(o, i) {
 				$('#paymentinfo').append(
@@ -211,7 +214,7 @@ function reqlist(uid, sin, ipp) {
 				);
 				$('#maindiv').after(
 					/** main modal */
-					'<div class="modal fade" id="modal' + i.num + '">' +
+					'<div class="modal fade detail" id="modal' + i.num + '">' +
 					'<div class="modal-dialog modal-lg modal-dialog-centered">' +
 					'<div class="modal-content">' +
 					'<div class="modal-header">' +
@@ -259,7 +262,7 @@ function reqlist(uid, sin, ipp) {
 					'</div>' +
 
 					/** img modal */
-					'<div class="modal fade" id="openimg' + i.num + '">' +
+					'<div class="modal fade detail" id="openimg' + i.num + '">' +
 					'<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">' +
 					'<div class="modal-content">' +
 					'<div class="modal-header">' +
@@ -288,8 +291,6 @@ function initreqlistbydate(uid, startdate, enddate, sin, ipp) {
 		url: '/catbudget/initreqlistbydate',
 		data: { 'uid': uid, 'startdate': startdate, 'enddate': enddate, 'sin': sin, 'ipp': ipp },
 		success: function(data) {
-			console.log(data.length.length);
-			console.log(data.info.list);
 
 			$('.page-num').remove();
 			ipp = $('#ipp').val();
@@ -323,7 +324,7 @@ function initreqlistbydate(uid, startdate, enddate, sin, ipp) {
 
 
 			$('tr').remove('.listinfo');
-			$('.modal.fade').remove();
+			$('.modal.fade.detail').remove();
 
 			$.each(data.info.list, function(o, i) {
 				$('#paymentinfo').append(
@@ -337,7 +338,7 @@ function initreqlistbydate(uid, startdate, enddate, sin, ipp) {
 				);
 				$('#maindiv').after(
 					/** main modal */
-					'<div class="modal fade" id="modal' + i.num + '">' +
+					'<div class="modal fade detail" id="modal' + i.num + '">' +
 					'<div class="modal-dialog modal-lg modal-dialog-centered">' +
 					'<div class="modal-content">' +
 					'<div class="modal-header">' +
@@ -385,7 +386,7 @@ function initreqlistbydate(uid, startdate, enddate, sin, ipp) {
 					'</div>' +
 
 					/** img modal */
-					'<div class="modal fade" id="openimg' + i.num + '">' +
+					'<div class="modal fade detail" id="openimg' + i.num + '">' +
 					'<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">' +
 					'<div class="modal-content">' +
 					'<div class="modal-header">' +
@@ -414,10 +415,9 @@ function reqlistbydate(uid, startdate, enddate, sin, ipp) {
 		url: '/catbudget/reqlistbydate',
 		data: { 'uid': uid, 'startdate': startdate, 'enddate': enddate, 'sin': sin, 'ipp': ipp },
 		success: function(data) {
-			console.log(data);
 
 			$('tr').remove('.listinfo');
-			$('.modal.fade').remove();
+			$('.modal.fade.detail').remove();
 
 			$.each(data, function(o, i) {
 				$('#paymentinfo').append(
@@ -431,7 +431,7 @@ function reqlistbydate(uid, startdate, enddate, sin, ipp) {
 				);
 				$('#maindiv').after(
 					/** main modal */
-					'<div class="modal fade" id="modal' + i.num + '">' +
+					'<div class="modal fade detail" id="modal' + i.num + '">' +
 					'<div class="modal-dialog modal-lg modal-dialog-centered">' +
 					'<div class="modal-content">' +
 					'<div class="modal-header">' +
@@ -479,7 +479,7 @@ function reqlistbydate(uid, startdate, enddate, sin, ipp) {
 					'</div>' +
 
 					/** img modal */
-					'<div class="modal fade" id="openimg' + i.num + '">' +
+					'<div class="modal fade detail" id="openimg' + i.num + '">' +
 					'<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">' +
 					'<div class="modal-content">' +
 					'<div class="modal-header">' +
