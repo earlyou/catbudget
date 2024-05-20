@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.earlyou.catbudget.biz.PaymentBiz;
 import com.earlyou.catbudget.biz.UserinfoBiz;
@@ -29,10 +28,9 @@ public class MainController {
 	PaymentBiz pbiz;
 
 	@GetMapping("/")
-	public String main(Model m, HttpSession s, RedirectAttributes r, @ModelAttribute String test,
-			@ModelAttribute String test1) {
-		System.out.println(test);
-		System.out.println(test1);
+	public String main(Model m, HttpSession s, RedirectAttributes r, @ModelAttribute("startdate") String startdate,
+			@ModelAttribute("enddate") String enddate, @ModelAttribute("ipp") int ipp, @ModelAttribute("sin") int sin,
+			@ModelAttribute("listsize") int listsize, @ModelAttribute("lastpage") int lastpage) {
 
 		if (s.getAttribute("uid") == null) {
 
@@ -73,7 +71,7 @@ public class MainController {
 	}
 
 	@PostMapping("/loginimpl")
-	public RedirectView register(Model m, @RequestParam("uid") String uid, @RequestParam("pwd") String pwd, HttpSession s,
+	public String register(Model m, @RequestParam("uid") String uid, @RequestParam("pwd") String pwd, HttpSession s,
 			RedirectAttributes r) {
 
 		UserinfoVO userinfo = null;
@@ -91,12 +89,12 @@ public class MainController {
 			}
 		} catch (Exception e) {
 			r.addFlashAttribute("v", "f");
-//			return "redirect:/login";
-			return new RedirectView("/login");
+			return "redirect:/login";
+//			return new RedirectView("/login");
 		}
 		r.addAttribute("tt", "test");
 		r.addAttribute("test1", "test1");
-		return new RedirectView("/catbudget");
-//		return "redirect:/";
+//		return new RedirectView("/catbudget");
+		return "redirect:/";
 	}
 }
