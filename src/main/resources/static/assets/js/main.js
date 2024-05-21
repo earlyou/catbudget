@@ -3,6 +3,9 @@
  */
 
 $(document).ready(function() {
+	// URL의 param 숨기기(ex. http://127.0.0.1:8080/catbudget/?tt=test&test1=test1 => http://127.0.0.1:8080/catbudget/)
+	history.replaceState({}, null, location.pathname);
+	
 	var startdate = $('#startdate').val();
 	var enddate = $('#enddate').val();
 	/** initiate date picker start date */

@@ -28,9 +28,12 @@ public class MainController {
 	PaymentBiz pbiz;
 
 	@GetMapping("/")
-	public String main(Model m, HttpSession s, RedirectAttributes r, @ModelAttribute("startdate") String startdate,
-			@ModelAttribute("enddate") String enddate, @ModelAttribute("ipp") int ipp, @ModelAttribute("sin") int sin,
-			@ModelAttribute("listsize") int listsize, @ModelAttribute("lastpage") int lastpage) {
+	public String main(Model m, HttpSession s, RedirectAttributes r,
+			@RequestParam(value = "tt", required = false) String tt,
+			@RequestParam(value = "test1", defaultValue="default") String test1) {
+
+		System.out.println(tt);
+		System.out.println(test1);
 
 		if (s.getAttribute("uid") == null) {
 
