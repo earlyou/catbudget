@@ -19,11 +19,15 @@ public class ListinfoBiz {
 		return dao.selectbypage(v);
 	}
 	
+	public int getlength(ListinfoVO v) throws Exception {
+		return dao.selectlength(v);
+	}
+	
 	public List<PaymentVO> getbydate(ListinfoVO v) throws Exception {
 		return dao.selectbydate(v);
 	}
 	
-	public int getlength(ListinfoVO v) throws Exception {
-		return dao.selectlength(v);
+	public int getlengthbydate(ListinfoVO v) throws Exception {
+		return dao.selectlengthbydate(v);
 	}
 }

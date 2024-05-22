@@ -33,20 +33,18 @@
 
 		<div class="col-xl-1">
 			<select class="form-select mb-2" id="ipp" name="itemsperpage">
-				<option value="10">10</option>
-				<option value="20">20</option>
-				<option value="50">50</option>
-				<option value="100">100</option>
+				<option value="10" th:selected="${ipp} == 10">10</option>
+				<option value="20" th:selected="${ipp} == 20">20</option>
+				<option value="50" th:selected="${ipp} == 50">50</option>
+				<option value="100" th:selected="${ipp} == 100">100</option>
 			</select>
 		</div>
 		<div class="col-xl-3">
 
 			<div class="input-daterange input-group mb-2" id="datepicker">
-				<input type="text" class="input-sm form-control" id="startdate"
-					name="start" readonly /> <a style='font-size: 24px; color: green;'
-					class='far mt-2 m-1' id="datesrchbtn" href="#">&#xf272;</a> <input
-					type="text" class="input-sm form-control" id="enddate" name="end"
-					readonly />
+				<input type="text" class="input-sm form-control" id="startdate" name="start" th:value="${startdate}" readonly /> 
+				<a style='font-size: 24px; color: green;' class="far mt-2 m-1" id="datesrchbtn" href="#">&#xf272;</a> 
+				<input type="text" class="input-sm form-control" id="enddate" name="end" th:value="${enddate}" readonly />
 			</div>
 		</div>
 	</div>
@@ -71,16 +69,17 @@
 			</tr>
 		</thead>
 		<tbody id="paymentinfo">
-			<tr class="listinfo">
-				<td>2024.05.10</td>
-				<td>
+			<tr class="listinfo" th:each="l, i : ${list}">
+				<td class="text-center" th:text="${i.count}+${ipp}*(${page}-1)">1</td>
+				<td class="text-center" th:text="${l.regdate}">2024.05.10</td>
+				<td class="text-center">
 					<button type="button" class="btn btn-link" data-bs-toggle="modal"
-						data-bs-target="#readonly">활성탄</button>
+						th:attr="data-bs-target='#detail'+${l.num}" th:text="${l.detail}">활성탄</button>
 				</td>
-				<td>38,400</td>
-				<td>
+				<td class="text-center" th:text="${l.price}">38,400</td>
+				<td class="text-center">
 					<button type="button" class="btn btn-info" data-bs-toggle="modal"
-						data-bs-target="#openimg">보기</button>
+						th:attr="data-bs-target='#openimg'+${l.num}">보기</button>
 				</td>
 			</tr>
 		</tbody>
@@ -103,7 +102,7 @@
 
 
 <!-- read only modal -->
-<div class="modal fade" id="readonly">
+<div th:each="l, i : ${list}" class="modal fade" th:id="detail+${l.num}">
 	<div class="modal-dialog modal-lg modal-dialog-centered">
 		<div class="modal-content">
 
@@ -119,17 +118,17 @@
 					<div class="mb-3 mt-3">
 						<label for="date">날짜:</label> <input type="date"
 							class="form-control" id="date" placeholder="날짜" name="date"
-							value="2024-05-10" readonly>
+							th:value="${l.regdate}" readonly>
 					</div>
 					<div class="mb-3">
 						<label for="detail">내역:</label> <input type="text"
 							class="form-control" id="detail" placeholder="결제 내역"
-							name="detail" value="활성탄" readonly>
+							name="detail" th:value="${l.detail}" readonly>
 					</div>
 					<div class="mb-3">
 						<label for="price">금액:</label> <input type="number"
 							class="form-control" id="price" placeholder="금액" name="price"
-							value="38400" readonly>
+							th:value="${l.price}" readonly>
 					</div>
 
 					<div class="row">
@@ -147,7 +146,7 @@
 							<div class="mb-3">
 								<label for="memo">메모:</label>
 								<textarea class="mx-auto d-block form-control mt-3 w-75"
-									rows="12" id="comment" name="text" readonly></textarea>
+									rows="12" id="comment" name="text" th:text="${l.memo}" readonly></textarea>
 							</div>
 						</div>
 					</div>
@@ -229,7 +228,7 @@
 </div>
 
 <!-- open image modal -->
-<div class="modal fade" id="openimg">
+<div th:each="l, i : ${list}" class="modal fade" th:id="openimg+${l.num}">
 	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 		<div class="modal-content">
 
@@ -321,7 +320,27 @@
 <script th:inline="javascript">
 	/*<![CDATA[*/
 	var uid = /*[[${session.uid}]]*/'';
-	var listsize = /*[[${listsize}]]*/'';
+	var startdate = /*[[${startdate}]]*/'';
+	var enddate = /*[[${enddate}]]*/'';
+	var page = /*[[${page}]]*/'';
+	var ipp = /*[[${ipp}]]*/'';
+	var sin = /*[[${sin}]]*/'';
+	var list = /*[[${list}]]*/'';
+	var length = /*[[${length}]]*/'';
+	var maxpage = /*[[${maxpage}]]*/'';
+	
+	/** 
+	console.log('uid: ' + uid);
+	console.log('startdate: ' + startdate);
+	console.log('enddate: ' + enddate);
+	console.log('page: ' + page);
+	console.log('sin: ' + sin);
+	console.log('ipp: ' + ipp);
+	console.log(list);
+	console.log('length: ' + length);
+	console.log('maxpage: ' + maxpage);*/
+	
+	
 	/*]]>*/
 </script>
 

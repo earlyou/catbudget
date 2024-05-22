@@ -47,7 +47,7 @@ public class AjaxController {
 
 		try {
 			list = lbiz.getbydate(listinfo);
-			listlength = lbiz.getlength(lengthinfo);
+			listlength = lbiz.getlengthbydate(lengthinfo);
 
 			info.put("list", list);
 			length.put("length", listlength);

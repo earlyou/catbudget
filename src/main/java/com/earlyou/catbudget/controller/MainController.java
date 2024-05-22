@@ -6,13 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.earlyou.catbudget.biz.ListinfoBiz;
 import com.earlyou.catbudget.biz.PaymentBiz;
 import com.earlyou.catbudget.biz.UserinfoBiz;
+import com.earlyou.catbudget.vo.ListinfoVO;
 import com.earlyou.catbudget.vo.PaymentVO;
 import com.earlyou.catbudget.vo.UserinfoVO;
 
@@ -27,13 +28,20 @@ public class MainController {
 	@Autowired
 	PaymentBiz pbiz;
 
+	@Autowired
+	ListinfoBiz lbiz;
+
 	@GetMapping("/")
 	public String main(Model m, HttpSession s, RedirectAttributes r,
-			@RequestParam(value = "tt", required = false) String tt,
-			@RequestParam(value = "test1", defaultValue="default") String test1) {
+			@RequestParam(value = "startdate", required = false) String startdate,
+			@RequestParam(value = "enddate", required = false) String enddate,
+			@RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "ipp", defaultValue = "10") int ipp) {
 
-		System.out.println(tt);
-		System.out.println(test1);
+		int sin = (page - 1) * ipp;
+		int length = 0;
+		List<PaymentVO> list = null;
+		String uid = "";
 
 		if (s.getAttribute("uid") == null) {
 
@@ -42,18 +50,54 @@ public class MainController {
 
 			return "redirect:/login";
 		} else {
-			List<PaymentVO> list = null;
+			uid = s.getAttribute("uid").toString();
+			if (startdate == null || startdate == "" || enddate == null || enddate == "") {
+				// login -> main
+				ListinfoVO listlengthinfo = new ListinfoVO(uid);
+				ListinfoVO listinfo = new ListinfoVO(uid, sin, ipp);
 
-			try {
-				String uid = s.getAttribute("uid").toString();
-				list = pbiz.getbyuid(uid);
-				m.addAttribute("listsize", list.size());
+				try {
+					list = lbiz.getbypage(listinfo);
+					length = lbiz.getlength(listlengthinfo);
+				} catch (Exception e) {
+					m.addAttribute("main", "auth/login");
+					return "index";
+				}
 
-			} catch (Exception e) {
-				m.addAttribute("main", "main/main");
-				return "index";
+			} else {
+				// main -> main
+				ListinfoVO listlengthinfo = new ListinfoVO(uid, startdate, enddate);
+				ListinfoVO listinfo = new ListinfoVO(uid, startdate, enddate, sin, ipp);
+				
+				try {
+					list = lbiz.getbydate(listinfo);
+					length = lbiz.getlengthbydate(listlengthinfo);
+				} catch (Exception e) {
+					m.addAttribute("main", "auth/login");
+					return "index";
+				}
+
 			}
 		}
+
+		System.out.println("startdate: " + startdate);
+		System.out.println("enddate: " + enddate);
+		System.out.println("page: " + page);
+		System.out.println("ipp: " + ipp);
+		System.out.println("sin: " + sin);
+		System.out.println("list: " + list);
+		System.out.println("length: " + length);
+		System.out.println("maxpage: " + (int) Math.ceil((double) length / ipp));
+		
+
+		m.addAttribute("startdate", startdate);
+		m.addAttribute("enddate", enddate);
+		m.addAttribute("page", page);
+		m.addAttribute("ipp", ipp);
+		m.addAttribute("sin", sin);
+		m.addAttribute("list", list);
+		m.addAttribute("length", length);
+		m.addAttribute("maxpage", (int) Math.ceil((double) length / ipp));
 		m.addAttribute("main", "main/main");
 		return "index";
 	}
