@@ -46,8 +46,8 @@ public class AjaxController {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 
 		try {
-			list = lbiz.getbydate(listinfo);
-			listlength = lbiz.getlengthbydate(lengthinfo);
+			list = lbiz.getbydaterange(listinfo);
+			listlength = lbiz.getlengthbydaterange(lengthinfo);
 
 			info.put("list", list);
 			length.put("length", listlength);
@@ -68,7 +68,7 @@ public class AjaxController {
 		List<PaymentVO> list = null;
 
 		try {
-			list = lbiz.getbydate(listinfo);
+			list = lbiz.getbydaterange(listinfo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

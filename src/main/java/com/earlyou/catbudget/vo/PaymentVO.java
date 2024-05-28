@@ -39,6 +39,16 @@ public class PaymentVO {
 		this.pic = pic;
 		this.memo = memo;
 	}
-	
+
+	/** 
+	 * for selectbydate
+	 * @param uid
+	 * @param regdate
+	 */
+	public PaymentVO(String uid, String regdate) {
+		super();
+		this.uid = uid;
+		this.regdate = regdate;
+	}
 	
 }

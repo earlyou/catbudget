@@ -23,11 +23,11 @@ public class ListinfoBiz {
 		return dao.selectlength(v);
 	}
 	
-	public List<PaymentVO> getbydate(ListinfoVO v) throws Exception {
-		return dao.selectbydate(v);
+	public List<PaymentVO> getbydaterange(ListinfoVO v) throws Exception {
+		return dao.selectbydaterange(v);
 	}
 	
-	public int getlengthbydate(ListinfoVO v) throws Exception {
-		return dao.selectlengthbydate(v);
+	public int getlengthbydaterange(ListinfoVO v) throws Exception {
+		return dao.selectlengthbydaterange(v);
 	}
 }

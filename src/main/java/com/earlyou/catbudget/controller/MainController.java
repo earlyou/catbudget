@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.earlyou.catbudget.biz.ListinfoBiz;
@@ -68,10 +69,10 @@ public class MainController {
 				// main -> main
 				ListinfoVO listlengthinfo = new ListinfoVO(uid, startdate, enddate);
 				ListinfoVO listinfo = new ListinfoVO(uid, startdate, enddate, sin, ipp);
-				
+
 				try {
-					list = lbiz.getbydate(listinfo);
-					length = lbiz.getlengthbydate(listlengthinfo);
+					list = lbiz.getbydaterange(listinfo);
+					length = lbiz.getlengthbydaterange(listlengthinfo);
 				} catch (Exception e) {
 					m.addAttribute("main", "auth/login");
 					return "index";
@@ -88,7 +89,6 @@ public class MainController {
 		System.out.println("list: " + list);
 		System.out.println("length: " + length);
 		System.out.println("maxpage: " + (int) Math.ceil((double) length / ipp));
-		
 
 		m.addAttribute("startdate", startdate);
 		m.addAttribute("enddate", enddate);
@@ -118,7 +118,7 @@ public class MainController {
 	}
 
 	@PostMapping("/loginimpl")
-	public String register(Model m, @RequestParam("uid") String uid, @RequestParam("pwd") String pwd, HttpSession s,
+	public String login(Model m, @RequestParam("uid") String uid, @RequestParam("pwd") String pwd, HttpSession s,
 			RedirectAttributes r) {
 
 		UserinfoVO userinfo = null;
@@ -143,5 +143,24 @@ public class MainController {
 		r.addAttribute("test1", "test1");
 //		return new RedirectView("/catbudget");
 		return "redirect:/";
+	}
+
+	@PostMapping("/add")
+	public String add(Model m, HttpSession s, RedirectAttributes r,
+			@RequestParam(value = "regdate", required = false) String regdate,
+			@RequestParam(value = "detail", defaultValue = "") int detail,
+			@RequestParam(value = "price", defaultValue = "0") int price,
+			@RequestParam(value = "file", required = false) MultipartFile file,
+			@RequestParam(value = "memo", defaultValue = "") int memo) {
+		
+		String uid = s.getAttribute("uid").toString();
+		PaymentVO c = new PaymentVO(uid, regdate);
+		try {
+			List<PaymentVO> l = pbiz.getbydate(c);
+		} catch (Exception e) {
+			return "redirect:/";
+		}
+		
+		return "index";
 	}
 }
