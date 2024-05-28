@@ -40,7 +40,7 @@ public class ListinfoVO {
 	}
 
 	/**
-	 * for getlengthbydate
+	 * for getlengthbydaterange
 	 */
 	public ListinfoVO(String uid, String startdate, String enddate) {
 		super();

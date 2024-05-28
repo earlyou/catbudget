@@ -4,6 +4,14 @@
 
 $(document).ready(function() {
 	
+	$('#add').click(function() {
+		$('#addform').attr({
+			'method' : 'post',
+			'action' : '/catbudget/add'
+		});
+		$('#addform').submit();
+	});
+	
 	/** URL의 param 숨기기
 	 * (ex. https://earlyou.com/catbudget/?tt=test&test1=test1 => https://earlyou.com/catbudget/) 
 	 * */

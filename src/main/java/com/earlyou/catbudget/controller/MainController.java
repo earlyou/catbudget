@@ -1,5 +1,9 @@
 package com.earlyou.catbudget.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,14 +85,14 @@ public class MainController {
 			}
 		}
 
-		System.out.println("startdate: " + startdate);
-		System.out.println("enddate: " + enddate);
-		System.out.println("page: " + page);
-		System.out.println("ipp: " + ipp);
-		System.out.println("sin: " + sin);
-		System.out.println("list: " + list);
-		System.out.println("length: " + length);
-		System.out.println("maxpage: " + (int) Math.ceil((double) length / ipp));
+//		System.out.println("startdate: " + startdate);
+//		System.out.println("enddate: " + enddate);
+//		System.out.println("page: " + page);
+//		System.out.println("ipp: " + ipp);
+//		System.out.println("sin: " + sin);
+//		System.out.println("list: " + list);
+//		System.out.println("length: " + length);
+//		System.out.println("maxpage: " + (int) Math.ceil((double) length / ipp));
 
 		m.addAttribute("startdate", startdate);
 		m.addAttribute("enddate", enddate);
@@ -145,22 +149,40 @@ public class MainController {
 		return "redirect:/";
 	}
 
+	
+	private static String UPLOAD_DIR = "src\\main\\resources\\static\\img\\";
+	
 	@PostMapping("/add")
 	public String add(Model m, HttpSession s, RedirectAttributes r,
 			@RequestParam(value = "regdate", required = false) String regdate,
-			@RequestParam(value = "detail", defaultValue = "") int detail,
+			@RequestParam(value = "detail", defaultValue = "") String detail,
 			@RequestParam(value = "price", defaultValue = "0") int price,
 			@RequestParam(value = "file", required = false) MultipartFile file,
-			@RequestParam(value = "memo", defaultValue = "") int memo) {
+			@RequestParam(value = "memo", defaultValue = "") String memo) {
+		
+		
 		
 		String uid = s.getAttribute("uid").toString();
+		List<PaymentVO> l = null;
 		PaymentVO c = new PaymentVO(uid, regdate);
+		System.out.println(file);
+		
 		try {
-			List<PaymentVO> l = pbiz.getbydate(c);
+			l = pbiz.getbydate(c);
+			int seq = l.size();
+			
+			byte[] bytes = file.getBytes();
+			Path path = Paths.get(UPLOAD_DIR + regdate + "(" + seq + ")" + "_" + file.getOriginalFilename());
+			Files.write(path, bytes);
+			
+			PaymentVO n = new PaymentVO(uid, regdate, seq, detail, price, "img/" + regdate + "(" + seq + ")" + "_" + file.getOriginalFilename(), memo);
+			pbiz.register(n);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return "redirect:/";
 		}
 		
-		return "index";
+		
+		return "redirect:/";
 	}
 }
