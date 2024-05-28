@@ -3,15 +3,32 @@
  */
 
 $(document).ready(function() {
-	
+
+	$('#addfile').on('change', function(e) {
+		console.log('file changed')
+		const f = e.target.files[0];
+		if (f) {
+			const r = new FileReader();
+			r.onload = function(e) {
+				$('#previewImage').attr('src', e.target.result).show();
+			}
+			r.readAsDataURL(f);
+			
+			$('#previewImage').prop('hidden', false);
+		} else {
+			$('#previewImage').prop('hidden', true);
+			$('#previewImage').attr('src', '').hide();
+		}
+	});
+
 	$('#add').click(function() {
 		$('#addform').attr({
-			'method' : 'post',
-			'action' : '/catbudget/add'
+			'method': 'post',
+			'action': '/catbudget/add'
 		});
 		$('#addform').submit();
 	});
-	
+
 	/** URL의 param 숨기기
 	 * (ex. https://earlyou.com/catbudget/?tt=test&test1=test1 => https://earlyou.com/catbudget/) 
 	 * */
@@ -52,9 +69,9 @@ $(document).ready(function() {
 	$('#datesrchbtn').on('click', function() {
 		startdate = $('#startdate').val();
 		enddate = $('#enddate').val();
-		
+
 		$(location).attr('href', '/catbudget?startdate=' + startdate + '&enddate=' + enddate + '&page=' + page + '&ipp=' + ipp);
-		
+
 	});
 
 	/** 

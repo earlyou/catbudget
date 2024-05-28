@@ -157,7 +157,7 @@ public class MainController {
 			@RequestParam(value = "regdate", required = false) String regdate,
 			@RequestParam(value = "detail", defaultValue = "") String detail,
 			@RequestParam(value = "price", defaultValue = "0") int price,
-			@RequestParam(value = "file", required = false) MultipartFile file,
+			@RequestParam(value = "addfile", required = false) MultipartFile file,
 			@RequestParam(value = "memo", defaultValue = "") String memo) {
 		
 		
