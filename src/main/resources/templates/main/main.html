@@ -20,12 +20,11 @@
 </head>
 
 <div class="container mt-3" id="maindiv">
-
 	<h2>결제 내역 조회하기</h2>
 	<p>고앵이 루밍 유자 룽지 지미(?)</p>
 	<div class="row">
 		<div class="col-xl-8">
-			<button type="button" class="btn btn-info mb-2"
+			<button id="addbtn" type="button" class="btn btn-info mb-2"
 				data-bs-toggle="modal" data-bs-target="#addmodal">
 				<i class='fas fa-plus'></i> 추가
 			</button>
@@ -42,9 +41,12 @@
 		<div class="col-xl-3">
 
 			<div class="input-daterange input-group mb-2" id="datepicker">
-				<input type="text" class="input-sm form-control" id="startdate" name="start" th:value="${startdate}" readonly /> 
-				<a style='font-size: 24px; color: green;' class="far mt-2 m-1" id="datesrchbtn" href="#">&#xf272;</a> 
-				<input type="text" class="input-sm form-control" id="enddate" name="end" th:value="${enddate}" readonly />
+				<input type="text" class="input-sm form-control" id="startdate"
+					name="start" th:value="${startdate}" readonly /> <a
+					style='font-size: 24px; color: green;' class="far mt-2 m-1"
+					id="datesrchbtn" href="#">&#xf272;</a> <input type="text"
+					class="input-sm form-control" id="enddate" name="end"
+					th:value="${enddate}" readonly />
 			</div>
 		</div>
 	</div>
@@ -85,7 +87,7 @@
 		</tbody>
 	</table>
 	<div class="float-sm-end">
-		<button type="button" class="btn btn-info" data-bs-toggle="modal"
+		<button id="addbtn" type="button" class="btn btn-info" data-bs-toggle="modal"
 			data-bs-target="#addmodal">
 			<i class='fas fa-plus'></i> 추가
 		</button>
@@ -117,17 +119,17 @@
 				<form action="/action_page.php">
 					<div class="mb-3 mt-3">
 						<label for="date">날짜:</label> <input type="date"
-							class="form-control" id="date" placeholder="날짜" name="date"
+							class="form-control" th:id="readdate+${l.num}" placeholder="날짜" name="date"
 							th:value="${l.regdate}" readonly>
 					</div>
 					<div class="mb-3">
 						<label for="detail">내역:</label> <input type="text"
-							class="form-control" id="detail" placeholder="결제 내역"
+							class="form-control" th:id="readdetail+${l.num}" placeholder="결제 내역"
 							name="detail" th:value="${l.detail}" readonly>
 					</div>
 					<div class="mb-3">
 						<label for="price">금액:</label> <input type="number"
-							class="form-control" id="price" placeholder="금액" name="price"
+							class="form-control" th:id="readprice+${l.num}" placeholder="금액" name="price"
 							th:value="${l.price}" readonly>
 					</div>
 
@@ -136,14 +138,15 @@
 							<div class="mb-3">
 								<label for="bill">영수증:</label>
 								<p></p>
-								<img th:src="${l.pic}" class="mx-auto d-block img-thumbnail" alt="영수증">
+								<img th:src="${l.pic}" class="mx-auto d-block img-thumbnail"
+									alt="영수증">
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="mb-3">
 								<label for="memo">메모:</label>
 								<textarea class="mx-auto d-block form-control mt-3 w-75"
-									rows="12" id="comment" name="text" th:text="${l.memo}" readonly></textarea>
+									rows="12" th:id="readmemo+${l.num}" name="memo" th:text="${l.memo}" readonly></textarea>
 							</div>
 						</div>
 					</div>
@@ -161,68 +164,10 @@
 	</div>
 </div>
 
-<!-- modify modal -->
-<div class="modal fade" id="modify">
-	<div class="modal-dialog modal-lg modal-dialog-centered">
-		<div class="modal-content">
-
-			<!-- Modal Header -->
-			<div class="modal-header">
-				<h4 class="modal-title">상세 보기</h4>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-			</div>
-
-			<!-- Modal body -->
-			<div class="container mt-3">
-				<form action="/action_page.php">
-					<div class="mb-3 mt-3">
-						<label for="date">날짜:</label> <input type="date"
-							class="form-control" id="date" placeholder="날짜" name="date"
-							value="2024-04-30">
-					</div>
-					<div class="mb-3">
-						<label for="detail">내역:</label> <input type="text"
-							class="form-control" id="detail" placeholder="결제 내역"
-							name="detail" value="활성탄">
-					</div>
-					<div class="mb-3">
-						<label for="price">금액:</label> <input type="number"
-							class="form-control" id="price" placeholder="금액" name="price"
-							value="38400">
-					</div>
-					<div class="row">
-						<div class="col-sm-6">
-							<div class="mb-3">
-								<label for="bill">영수증:</label>
-								<p></p>
-								<input type="file" id="file" name="file"/>
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="mb-3">
-								<label for="memo">메모:</label>
-								<textarea class="mx-auto d-block form-control mt-3 w-75"
-									rows="12" id="comment" name="text"></textarea>
-							</div>
-						</div>
-					</div>
-					<button type="submit" class="btn btn-primary mb-2">사진 삭제</button>
-				</form>
-			</div>
-
-			<!-- Modal footer -->
-			<div class="modal-footer">
-				<button type="button" class="btn btn-success">저장</button>
-				<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
-			</div>
-
-		</div>
-	</div>
-</div>
-
 <!-- open image modal -->
-<div th:each="l, i : ${list}" class="modal fade" th:id="openimg+${l.num}">
-	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+<div th:each="l, i : ${list}" class="modal fade"
+	th:id="openimg+${l.num}">
+	<div class="modal-dialog modal-xl modal-dialog-centered">
 		<div class="modal-content">
 
 			<!-- Modal Header -->
@@ -234,7 +179,8 @@
 			<!-- Modal body -->
 			<div class="container mt-3">
 				<div class="mb-3">
-					<img th:src="${l.pic}" class="mx-auto d-block img-thumbnail" alt="영수증">
+					<img th:src="${l.pic}" class="mx-auto d-block img-thumbnail"
+						alt="영수증">
 				</div>
 			</div>
 
@@ -260,38 +206,47 @@
 
 			<!-- Modal body -->
 			<div class="container mt-3">
-				<form id="addform" method="post" enctype="multipart/form-data" action="/catbudget/add">
+				<form id="addform" method="post" enctype="multipart/form-data"
+					action="/catbudget/add">
 					<div class="mb-3 mt-3">
 						<label for="regdate">날짜:</label> <input type="date"
-							class="form-control" id="regdate" placeholder="날짜" name="regdate">
+							class="form-control" id="addregdate" placeholder="날짜" name="regdate">
+							<div class="invalid-feedback">필수 항목입니다.</div>
 					</div>
 					<div class="mb-3">
 						<label for="detail">내역:</label> <input type="text"
-							class="form-control" id="detail" placeholder="결제 내역"
+							class="form-control" id="adddetail" placeholder="결제 내역"
 							name="detail">
+							<div class="invalid-feedback">필수 항목입니다.</div>
 					</div>
 					<div class="mb-3">
 						<label for="price">금액:</label> <input type="number"
-							class="form-control" id="price" placeholder="금액" name="price">
+							class="form-control" id="addprice" placeholder="금액" name="price">
+							<div class="invalid-feedback">필수 항목입니다.</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="mb-3">
 								<label for="file">영수증:</label>
 								<p></p>
-								<input type="file" id="addfile" name="addfile"/>
-								<img id="previewImage" src="" alt="미리보기" hidden="true">
+								<input type="file" class="form-control" id="addfile"
+									name="addfile" />
+									<div class="invalid-feedback">필수 항목입니다.</div>
+								<p></p>
+								<img id="previewImage" class="img-fluid mx-auto" src=""
+									alt="미리보기" hidden="true">
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="mb-3">
 								<label for="memo">메모:</label>
 								<textarea class="mx-auto d-block form-control mt-3 w-75"
-									rows="12" id="comment" name="memo"></textarea>
+									rows="12" id="adddmemo" name="memo"></textarea>
 							</div>
 						</div>
 					</div>
-					<button type="submit" class="btn btn-primary mb-2">사진 삭제</button>
+					<button id="delpic" type="button" class="btn btn-primary mb-2">사진
+						삭제</button>
 				</form>
 			</div>
 
@@ -317,7 +272,7 @@
 	var list = /*[[${list}]]*/'';
 	var length = /*[[${length}]]*/'';
 	var maxpage = /*[[${maxpage}]]*/'';
-	
+
 	/** 
 	console.log('uid: ' + uid);
 	console.log('startdate: ' + startdate);
@@ -328,8 +283,7 @@
 	console.log(list);
 	console.log('length: ' + length);
 	console.log('maxpage: ' + maxpage);*/
-	
-	
+
 	/*]]>*/
 </script>
 

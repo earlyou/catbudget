@@ -5,7 +5,6 @@
 $(document).ready(function() {
 
 	$('#addfile').on('change', function(e) {
-		console.log('file changed')
 		const f = e.target.files[0];
 		if (f) {
 			const r = new FileReader();
@@ -13,7 +12,7 @@ $(document).ready(function() {
 				$('#previewImage').attr('src', e.target.result).show();
 			}
 			r.readAsDataURL(f);
-			
+
 			$('#previewImage').prop('hidden', false);
 		} else {
 			$('#previewImage').prop('hidden', true);
@@ -21,12 +20,49 @@ $(document).ready(function() {
 		}
 	});
 
+	$('#addbtn').click(function() {
+		$('#addform').removeClass('was-validated');
+		$('#addregdate').val('')
+		$('#adddetail').val('');
+		$('#addprice').val('');
+		$('#addfile').val('');
+		$('#addmemo').val('');
+	});
+
 	$('#add').click(function() {
-		$('#addform').attr({
-			'method': 'post',
-			'action': '/catbudget/add'
-		});
-		$('#addform').submit();
+
+		if (!$('#addregdate').val() || !$('#adddetail').val() || !$('#addprice').val() || !$('#addfile').val()) {
+			if (!$('#addregdate').val()) {
+				$('#addform').addClass('was-validated');
+				$('#addregdate').attr('required', true);
+			}
+			if (!$('#adddetail').val()) {
+				$('#addform').addClass('was-validated');
+				$('#adddetail').attr('required', true);
+			}
+			if (!$('#addprice').val()) {
+				$('#addform').addClass('was-validated');
+				$('#addprice').attr('required', true);
+			}
+			if (!$('#addfile').val()) {
+				$('#addform').addClass('was-validated');
+				$('#addfile').attr('required', true);
+			}
+			console.log('validation');
+		} else {
+			console.log('submit');
+			$('#addform').attr({
+				'method': 'post',
+				'action': '/catbudget/add'
+			});
+			$('#addform').submit();
+		}
+	});
+
+	$('#delpic').on('click', function() {
+		$('#addfile').val('');
+		$('#previewImage').prop('hidden', true);
+		$('#previewImage').attr('src', '').hide();
 	});
 
 	/** URL의 param 숨기기
@@ -102,7 +138,6 @@ $(document).ready(function() {
 
 	/** 페이지당 데이터 개수 변경 시 이벤트 */
 	$('#ipp').change(function() {
-
 		ipp = $('#ipp').val();
 		page = 1;
 		$(location).attr('href', '/catbudget?startdate=' + startdate + '&enddate=' + enddate + '&page=' + page + '&ipp=' + ipp);

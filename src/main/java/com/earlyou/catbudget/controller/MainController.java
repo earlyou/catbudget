@@ -1,6 +1,5 @@
 package com.earlyou.catbudget.controller;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -157,7 +156,7 @@ public class MainController {
 			@RequestParam(value = "regdate", required = false) String regdate,
 			@RequestParam(value = "detail", defaultValue = "") String detail,
 			@RequestParam(value = "price", defaultValue = "0") int price,
-			@RequestParam(value = "addfile", required = false) MultipartFile file,
+			@RequestParam(value = "addfile", required = false) MultipartFile mf,
 			@RequestParam(value = "memo", defaultValue = "") String memo) {
 		
 		
@@ -165,17 +164,25 @@ public class MainController {
 		String uid = s.getAttribute("uid").toString();
 		List<PaymentVO> l = null;
 		PaymentVO c = new PaymentVO(uid, regdate);
-		System.out.println(file);
 		
 		try {
 			l = pbiz.getbydate(c);
 			int seq = l.size();
 			
-			byte[] bytes = file.getBytes();
-			Path path = Paths.get(UPLOAD_DIR + regdate + "(" + seq + ")" + "_" + file.getOriginalFilename());
+			// 업로드 방법1
+			byte[] bytes = mf.getBytes();
+			Path path = Paths.get(UPLOAD_DIR + regdate + "(" + seq + ")" + "_" + mf.getOriginalFilename());
 			Files.write(path, bytes);
 			
-			PaymentVO n = new PaymentVO(uid, regdate, seq, detail, price, "img/" + regdate + "(" + seq + ")" + "_" + file.getOriginalFilename(), memo);
+			// 업로드 방법2
+//			String filename = mf.getOriginalFilename();
+//			byte[] bytes = mf.getBytes();
+//			String path = UPLOAD_DIR + regdate + "(" + seq + ")" + "_" + filename;
+//			FileOutputStream fos = new FileOutputStream(path);
+//			fos.write(bytes);
+//			fos.close();
+			
+			PaymentVO n = new PaymentVO(uid, regdate, seq, detail, price, "img/" + regdate + "(" + seq + ")" + "_" + mf.getOriginalFilename(), memo);
 			pbiz.register(n);
 		} catch (Exception e) {
 			e.printStackTrace();
