@@ -34,6 +34,14 @@ public class ListinfoVO {
 	/**
 	 * for getlength
 	 */
+	public ListinfoVO(String uid) {
+		super();
+		this.uid = uid;
+	}
+
+	/**
+	 * for getlengthbydaterange
+	 */
 	public ListinfoVO(String uid, String startdate, String enddate) {
 		super();
 		this.uid = uid;

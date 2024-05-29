@@ -17,4 +17,5 @@ public interface PaymentMapper {
 	public List<PaymentVO> selectall() throws Exception;
 	
 	public List<PaymentVO> selectbyuid(String obj) throws Exception;
+	public List<PaymentVO> selectbydate(PaymentVO obj) throws Exception;
 }

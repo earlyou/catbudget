@@ -1,5 +1,9 @@
 package com.earlyou.catbudget.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +12,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.earlyou.catbudget.biz.ListinfoBiz;
 import com.earlyou.catbudget.biz.PaymentBiz;
 import com.earlyou.catbudget.biz.UserinfoBiz;
+import com.earlyou.catbudget.vo.ListinfoVO;
 import com.earlyou.catbudget.vo.PaymentVO;
 import com.earlyou.catbudget.vo.UserinfoVO;
 
@@ -26,8 +33,21 @@ public class MainController {
 	@Autowired
 	PaymentBiz pbiz;
 
+	@Autowired
+	ListinfoBiz lbiz;
+
 	@GetMapping("/")
-	public String main(Model m, HttpSession s, RedirectAttributes r) {
+	public String main(Model m, HttpSession s, RedirectAttributes r,
+			@RequestParam(value = "startdate", required = false) String startdate,
+			@RequestParam(value = "enddate", required = false) String enddate,
+			@RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "ipp", defaultValue = "10") int ipp) {
+
+		int sin = (page - 1) * ipp;
+		int length = 0;
+		List<PaymentVO> list = null;
+		String uid = "";
+
 		if (s.getAttribute("uid") == null) {
 
 			// m.addAttribute와 비슷하지만 POST방식이며 1회성이라 새로고침하면 데이터 소멸
@@ -35,18 +55,53 @@ public class MainController {
 
 			return "redirect:/login";
 		} else {
-			List<PaymentVO> list = null;
+			uid = s.getAttribute("uid").toString();
+			if (startdate == null || startdate == "" || enddate == null || enddate == "") {
+				// login -> main
+				ListinfoVO listlengthinfo = new ListinfoVO(uid);
+				ListinfoVO listinfo = new ListinfoVO(uid, sin, ipp);
 
-			try {
-				String uid = s.getAttribute("uid").toString();
-				list = pbiz.getbyuid(uid);
-				m.addAttribute("listsize", list.size());
-				
-			} catch (Exception e) {
-				m.addAttribute("main", "main/main");
-				return "index";
+				try {
+					list = lbiz.getbypage(listinfo);
+					length = lbiz.getlength(listlengthinfo);
+				} catch (Exception e) {
+					m.addAttribute("main", "auth/login");
+					return "index";
+				}
+
+			} else {
+				// main -> main
+				ListinfoVO listlengthinfo = new ListinfoVO(uid, startdate, enddate);
+				ListinfoVO listinfo = new ListinfoVO(uid, startdate, enddate, sin, ipp);
+
+				try {
+					list = lbiz.getbydaterange(listinfo);
+					length = lbiz.getlengthbydaterange(listlengthinfo);
+				} catch (Exception e) {
+					m.addAttribute("main", "auth/login");
+					return "index";
+				}
+
 			}
 		}
+
+//		System.out.println("startdate: " + startdate);
+//		System.out.println("enddate: " + enddate);
+//		System.out.println("page: " + page);
+//		System.out.println("ipp: " + ipp);
+//		System.out.println("sin: " + sin);
+//		System.out.println("list: " + list);
+//		System.out.println("length: " + length);
+//		System.out.println("maxpage: " + (int) Math.ceil((double) length / ipp));
+
+		m.addAttribute("startdate", startdate);
+		m.addAttribute("enddate", enddate);
+		m.addAttribute("page", page);
+		m.addAttribute("ipp", ipp);
+		m.addAttribute("sin", sin);
+		m.addAttribute("list", list);
+		m.addAttribute("length", length);
+		m.addAttribute("maxpage", (int) Math.ceil((double) length / ipp));
 		m.addAttribute("main", "main/main");
 		return "index";
 	}
@@ -67,7 +122,7 @@ public class MainController {
 	}
 
 	@PostMapping("/loginimpl")
-	public String register(Model m, @RequestParam("uid") String uid, @RequestParam("pwd") String pwd, HttpSession s,
+	public String login(Model m, @RequestParam("uid") String uid, @RequestParam("pwd") String pwd, HttpSession s,
 			RedirectAttributes r) {
 
 		UserinfoVO userinfo = null;
@@ -86,7 +141,48 @@ public class MainController {
 		} catch (Exception e) {
 			r.addFlashAttribute("v", "f");
 			return "redirect:/login";
+//			return new RedirectView("/login");
 		}
+		r.addAttribute("tt", "test");
+		r.addAttribute("test1", "test1");
+//		return new RedirectView("/catbudget");
+		return "redirect:/";
+	}
+
+	
+	private static String UPLOAD_DIR = "src\\main\\resources\\static\\img\\";
+	
+	@PostMapping("/add")
+	public String add(Model m, HttpSession s, RedirectAttributes r,
+			@RequestParam(value = "regdate", required = false) String regdate,
+			@RequestParam(value = "detail", defaultValue = "") String detail,
+			@RequestParam(value = "price", defaultValue = "0") int price,
+			@RequestParam(value = "addfile", required = false) MultipartFile file,
+			@RequestParam(value = "memo", defaultValue = "") String memo) {
+		
+		
+		
+		String uid = s.getAttribute("uid").toString();
+		List<PaymentVO> l = null;
+		PaymentVO c = new PaymentVO(uid, regdate);
+		System.out.println(file);
+		
+		try {
+			l = pbiz.getbydate(c);
+			int seq = l.size();
+			
+			byte[] bytes = file.getBytes();
+			Path path = Paths.get(UPLOAD_DIR + regdate + "(" + seq + ")" + "_" + file.getOriginalFilename());
+			Files.write(path, bytes);
+			
+			PaymentVO n = new PaymentVO(uid, regdate, seq, detail, price, "img/" + regdate + "(" + seq + ")" + "_" + file.getOriginalFilename(), memo);
+			pbiz.register(n);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/";
+		}
+		
+		
 		return "redirect:/";
 	}
 }

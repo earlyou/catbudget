@@ -43,5 +43,8 @@ public class PaymentBiz implements Biz<Integer, PaymentVO> {
 	public List<PaymentVO> getbyuid(String k) throws Exception {
 		return dao.selectbyuid(k);
 	}
+	public List<PaymentVO> getbydate(PaymentVO v) throws Exception {
+		return dao.selectbydate(v);
+	}
 	
 }
