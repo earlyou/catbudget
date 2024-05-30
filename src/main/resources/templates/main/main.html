@@ -54,20 +54,25 @@
 	<table class="table table-hover table-bordered table-striped">
 		<thead class="table-success">
 			<tr>
-				<th class="text-center col-1"><button type="button"
-						class="btn btn-link" disabled>번호</button></th>
-				<th class="text-center"><button type="button"
-						class="btn btn-link">
+				<th class="text-center col-1">
+					<button type="button" class="btn btn-link" disabled>번호</button>
+				</th>
+				<th class="text-center">
+					<button type="button" class="btn btn-link">
 						날짜 <i class='fas fa-caret-down'></i>
-					</button></th>
-				<th class="text-center"><button type="button"
-						class="btn btn-link" disabled>내역</button></th>
-				<th class="text-center"><button type="button"
-						class="btn btn-link">
+					</button>
+				</th>
+				<th class="text-center">
+					<button type="button" class="btn btn-link" disabled>내역</button>
+				</th>
+				<th class="text-center">
+					<button type="button" class="btn btn-link">
 						금액 <i class='fas fa-caret-down'></i>
-					</button></th>
-				<th class="text-center"><button type="button"
-						class="btn btn-link" disabled>영수증</button></th>
+					</button>
+				</th>
+				<th class="text-center">
+					<button type="button" class="btn btn-link" disabled>영수증</button>
+				</th>
 			</tr>
 		</thead>
 		<tbody id="paymentinfo">
@@ -76,7 +81,7 @@
 				<td class="text-center" th:text="${l.regdate}">2024.05.10</td>
 				<td class="text-center">
 					<button type="button" class="btn btn-link" data-bs-toggle="modal"
-						th:attr="data-bs-target='#detail'+${l.num}" th:text="${l.detail}">활성탄</button>
+						th:attr="data-bs-target='#'+${l.num}" th:text="${l.detail}">활성탄</button>
 				</td>
 				<td class="text-center" th:text="${l.price}">38,400</td>
 				<td class="text-center">
@@ -87,15 +92,14 @@
 		</tbody>
 	</table>
 	<div class="float-sm-end">
-		<button id="addbtn" type="button" class="btn btn-info" data-bs-toggle="modal"
-			data-bs-target="#addmodal">
+		<button id="addbtn" type="button" class="btn btn-info"
+			data-bs-toggle="modal" data-bs-target="#addmodal">
 			<i class='fas fa-plus'></i> 추가
 		</button>
 	</div>
 
 	<ul class="pagination justify-content-center">
 		<li class="page-item" id="prevpage"><a class="page-link" href="#">이전</a></li>
-		<!-- <li class="page-num active"><a class="page-link" href="#">1</a></li> -->
 		<li class="page-item" id="nextpage"><a class="page-link" href="#">다음</a></li>
 	</ul>
 
@@ -104,7 +108,7 @@
 
 
 <!-- read only modal -->
-<div th:each="l, i : ${list}" class="modal fade" th:id="detail+${l.num}">
+<div th:each="l, i : ${list}" class="modal fade" th:id="${l.num}">
 	<div class="modal-dialog modal-lg modal-dialog-centered">
 		<div class="modal-content">
 
@@ -116,29 +120,29 @@
 
 			<!-- Modal body -->
 			<div class="container mt-3">
-				<form action="/action_page.php">
+				<form>
 					<div class="mb-3 mt-3">
 						<label for="date">날짜:</label> <input type="date"
-							class="form-control" th:id="readdate+${l.num}" placeholder="날짜" name="date"
-							th:value="${l.regdate}" readonly>
+							class="form-control" th:id="readdate+${l.num}" placeholder="날짜"
+							name="date" th:value="${l.regdate}" readonly>
 					</div>
 					<div class="mb-3">
 						<label for="detail">내역:</label> <input type="text"
-							class="form-control" th:id="readdetail+${l.num}" placeholder="결제 내역"
-							name="detail" th:value="${l.detail}" readonly>
+							class="form-control" th:id="readdetail+${l.num}"
+							placeholder="결제 내역" name="detail" th:value="${l.detail}" readonly>
 					</div>
 					<div class="mb-3">
 						<label for="price">금액:</label> <input type="number"
-							class="form-control" th:id="readprice+${l.num}" placeholder="금액" name="price"
-							th:value="${l.price}" readonly>
+							class="form-control" th:id="readprice+${l.num}" placeholder="금액"
+							name="price" th:value="${l.price}" readonly>
 					</div>
 
-					<div class="row">
+					<div class="row" th:id="lastcontent+${l.num}">
 						<div class="col-sm-6">
 							<div class="mb-3">
 								<label for="bill">영수증:</label>
 								<p></p>
-								<img th:src="${l.pic}" class="mx-auto d-block img-thumbnail"
+								<img th:id="readpic+${l.num}" th:src="${l.pic}" class="mx-auto d-block img-thumbnail"
 									alt="영수증">
 							</div>
 						</div>
@@ -146,7 +150,8 @@
 							<div class="mb-3">
 								<label for="memo">메모:</label>
 								<textarea class="mx-auto d-block form-control mt-3 w-75"
-									rows="12" th:id="readmemo+${l.num}" name="memo" th:text="${l.memo}" readonly></textarea>
+									rows="12" th:id="readmemo+${l.num}" name="memo"
+									th:text="${l.memo}" readonly></textarea>
 							</div>
 						</div>
 					</div>
@@ -155,14 +160,150 @@
 			</div>
 
 			<!-- Modal footer -->
-			<div class="modal-footer">
-				<button type="button" class="btn btn-success">수정</button>
+			<div class="modal-footer" th:id="footer+${l.num}">
+				<button th:id="mdbtn+${l.num}" type="button"
+					class="btn btn-success mdbtn" data-bs-dismiss="modal"
+					data-bs-toggle="modal" data-bs-target="#mdfymodal">수정</button>
 				<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
 			</div>
 
 		</div>
 	</div>
 </div>
+
+<!-- modify modal -->
+<div class="modal fade" id="mdfymodal">
+	<div class="modal-dialog modal-lg modal-dialog-centered">
+		<div class="modal-content">
+
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<h4 class="modal-title">상세 보기</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			</div>
+
+			<!-- Modal body -->
+			<div class="container mt-3">
+				<form method="post" enctype="multipart/form-data"
+					action="/catbudget/modify">
+					<input type="hidden" id="snum">
+					<div class="mb-3 mt-3">
+						<label for="date">날짜:</label> <input id="mdfydate" type="date"
+							class="form-control" placeholder="날짜" name="date">
+					</div>
+					<div class="mb-3">
+						<label for="detail">내역:</label> <input id="mdfydetail" type="text"
+							class="form-control" placeholder="결제 내역" name="detail">
+					</div>
+					<div class="mb-3">
+						<label for="price">금액:</label> <input id="mdfyprice" type="number"
+							class="form-control" placeholder="금액" name="price">
+					</div>
+
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="mb-3">
+								<label for="mdfyfile">영수증:</label> 
+								<p></p>
+								<input type="file" class="form-control" id="mdfyfile"
+									name="mdfyfile" hidden="true"/>
+								<div class="invalid-feedback">필수 항목입니다.</div>
+								<p></p>
+								<img id="mdfypreviewImage" class="img-fluid mx-auto" src=""
+									alt="미리보기">
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="mb-3">
+								<label for="memo">메모:</label>
+								<textarea id="mdfymemo" class="mx-auto d-block form-control mt-3 w-75"
+									rows="12" name="memo"></textarea>
+							</div>
+						</div>
+					</div>
+					<button id="mdfydelpic" type="button" class="btn btn-primary mb-2">사진 삭제</button>
+				</form>
+			</div>
+
+			<!-- Modal footer -->
+			<div class="modal-footer">
+				<button id="modify" type="button" class="btn btn-success">저장</button>
+				<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+<!-- add modal -->
+<div class="modal fade" id="addmodal">
+	<div class="modal-dialog modal-lg modal-dialog-centered">
+		<div class="modal-content">
+
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<h4 class="modal-title">내역 추가</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			</div>
+
+			<!-- Modal body -->
+			<div class="container mt-3">
+				<form id="addform" method="post" enctype="multipart/form-data"
+					action="/catbudget/add">
+					<div class="mb-3 mt-3">
+						<label for="regdate">날짜:</label> <input type="date"
+							class="form-control" id="addregdate" placeholder="날짜"
+							name="regdate">
+						<div class="invalid-feedback">필수 항목입니다.</div>
+					</div>
+					<div class="mb-3">
+						<label for="detail">내역:</label> <input type="text"
+							class="form-control" id="adddetail" placeholder="결제 내역"
+							name="detail">
+						<div class="invalid-feedback">필수 항목입니다.</div>
+					</div>
+					<div class="mb-3">
+						<label for="price">금액:</label> <input type="number"
+							class="form-control" id="addprice" placeholder="금액" name="price">
+						<div class="invalid-feedback">필수 항목입니다.</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="mb-3">
+								<label for="addfile">영수증:</label>
+								<p></p>
+								<input type="file" class="form-control" id="addfile"
+									name="addfile" />
+								<div class="invalid-feedback">필수 항목입니다.</div>
+								<p></p>
+								<img id="previewImage" class="img-fluid mx-auto" src=""
+									alt="미리보기" hidden="true">
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="mb-3">
+								<label for="memo">메모:</label>
+								<textarea class="mx-auto d-block form-control mt-3 w-75"
+									rows="12" id="adddmemo" name="memo"></textarea>
+							</div>
+						</div>
+					</div>
+					<button id="delpic" type="button" class="btn btn-primary mb-2">사진
+						삭제</button>
+				</form>
+			</div>
+
+			<!-- Modal footer -->
+			<div class="modal-footer">
+				<button id="add" type="button" class="btn btn-success">저장</button>
+				<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
 
 <!-- open image modal -->
 <div th:each="l, i : ${list}" class="modal fade"
@@ -186,73 +327,6 @@
 
 			<!-- Modal footer -->
 			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
-			</div>
-
-		</div>
-	</div>
-</div>
-
-<!-- add modal -->
-<div class="modal fade" id="addmodal">
-	<div class="modal-dialog modal-lg modal-dialog-centered">
-		<div class="modal-content">
-
-			<!-- Modal Header -->
-			<div class="modal-header">
-				<h4 class="modal-title">내역 추가</h4>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-			</div>
-
-			<!-- Modal body -->
-			<div class="container mt-3">
-				<form id="addform" method="post" enctype="multipart/form-data"
-					action="/catbudget/add">
-					<div class="mb-3 mt-3">
-						<label for="regdate">날짜:</label> <input type="date"
-							class="form-control" id="addregdate" placeholder="날짜" name="regdate">
-							<div class="invalid-feedback">필수 항목입니다.</div>
-					</div>
-					<div class="mb-3">
-						<label for="detail">내역:</label> <input type="text"
-							class="form-control" id="adddetail" placeholder="결제 내역"
-							name="detail">
-							<div class="invalid-feedback">필수 항목입니다.</div>
-					</div>
-					<div class="mb-3">
-						<label for="price">금액:</label> <input type="number"
-							class="form-control" id="addprice" placeholder="금액" name="price">
-							<div class="invalid-feedback">필수 항목입니다.</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-6">
-							<div class="mb-3">
-								<label for="file">영수증:</label>
-								<p></p>
-								<input type="file" class="form-control" id="addfile"
-									name="addfile" />
-									<div class="invalid-feedback">필수 항목입니다.</div>
-								<p></p>
-								<img id="previewImage" class="img-fluid mx-auto" src=""
-									alt="미리보기" hidden="true">
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="mb-3">
-								<label for="memo">메모:</label>
-								<textarea class="mx-auto d-block form-control mt-3 w-75"
-									rows="12" id="adddmemo" name="memo"></textarea>
-							</div>
-						</div>
-					</div>
-					<button id="delpic" type="button" class="btn btn-primary mb-2">사진
-						삭제</button>
-				</form>
-			</div>
-
-			<!-- Modal footer -->
-			<div class="modal-footer">
-				<button id="add" type="button" class="btn btn-success">저장</button>
 				<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
 			</div>
 

@@ -30,7 +30,6 @@ $(document).ready(function() {
 	});
 
 	$('#add').click(function() {
-
 		if (!$('#addregdate').val() || !$('#adddetail').val() || !$('#addprice').val() || !$('#addfile').val()) {
 			if (!$('#addregdate').val()) {
 				$('#addform').addClass('was-validated');
@@ -53,6 +52,7 @@ $(document).ready(function() {
 			console.log('submit');
 			$('#addform').attr({
 				'method': 'post',
+				'enctype': 'multipart/form-data',
 				'action': '/catbudget/add'
 			});
 			$('#addform').submit();
@@ -63,6 +63,29 @@ $(document).ready(function() {
 		$('#addfile').val('');
 		$('#previewImage').prop('hidden', true);
 		$('#previewImage').attr('src', '').hide();
+	});
+
+	$('.mdbtn').click(function() {
+		const readid = $(this).parent().parent().parent().parent().attr('id');
+		var readregdate = $('#readdate' + readid).val();
+		var readdetail = $('#readdetail' + readid).val();
+		var readprice = $('#readprice' + readid).val();
+		var readpic = $('#readpic' + readid).attr("src");
+		var readmemo = $('#readmemo' + readid).val();
+
+		$('#snum').val(readid);
+		$('#mdfydate').val(readregdate);
+		$('#mdfydetail').val(readdetail);
+		$('#mdfyprice').val(readprice);
+		$('#mdfypreviewImage').attr('src', readpic);
+		$('#mdfymemo').val(readmemo);
+	});
+	$('#mdfydelpic').click(function() {
+		$('#mdfyfile').val('');
+		$('#mdfyfile').prop('hidden', false);
+		$('#mdfypreviewImage').prop('hidden', true);
+		$('#mdfypreviewImage').attr('src', '').hide();
+
 	});
 
 	/** URL의 param 숨기기
@@ -118,10 +141,8 @@ $(document).ready(function() {
 	$('#nextpage').children('a').attr('href', '/catbudget?startdate=' + startdate + '&enddate=' + enddate + '&page=' + (page + 1) + '&ipp=' + ipp);
 	for (var i = 1; i <= maxpage; i++) {
 		if (i == page) {
-			console.log('active: ' + i);
 			$('#nextpage').before('<li class="page-num active" id="page' + i + '"><a class="page-link" href="/catbudget?startdate=' + startdate + '&enddate=' + enddate + '&page=' + i + '&ipp=' + ipp + '">' + i + '</a></li>');
 		} else {
-			console.log('!active: ' + i);
 			$('#nextpage').before('<li class="page-num" id="page' + i + '"><a class="page-link" href="/catbudget?startdate=' + startdate + '&enddate=' + enddate + '&page=' + i + '&ipp=' + ipp + '">' + i + '</a></li>');
 		}
 	}
