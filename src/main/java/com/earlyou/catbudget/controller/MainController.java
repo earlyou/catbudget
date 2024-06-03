@@ -1,5 +1,6 @@
 package com.earlyou.catbudget.controller;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -148,32 +149,30 @@ public class MainController {
 		return "redirect:/";
 	}
 
-	
 	private static String UPLOAD_DIR = "src\\main\\resources\\static\\img\\";
-	
+	private static String UPLOAD_staitc = "src\\main\\resources\\static\\";
+
 	@PostMapping("/add")
-	public String add(Model m, HttpSession s, RedirectAttributes r,
+	public String add(HttpSession s, RedirectAttributes r,
 			@RequestParam(value = "regdate", required = false) String regdate,
 			@RequestParam(value = "detail", defaultValue = "") String detail,
 			@RequestParam(value = "price", defaultValue = "0") int price,
 			@RequestParam(value = "addfile", required = false) MultipartFile mf,
 			@RequestParam(value = "memo", defaultValue = "") String memo) {
-		
-		
-		
+
 		String uid = s.getAttribute("uid").toString();
 		List<PaymentVO> l = null;
 		PaymentVO c = new PaymentVO(uid, regdate);
-		
+
 		try {
 			l = pbiz.getbydate(c);
 			int seq = l.size();
-			
+
 			// 업로드 방법1
 			byte[] bytes = mf.getBytes();
 			Path path = Paths.get(UPLOAD_DIR + regdate + "(" + seq + ")" + "_" + mf.getOriginalFilename());
 			Files.write(path, bytes);
-			
+
 			// 업로드 방법2
 //			String filename = mf.getOriginalFilename();
 //			byte[] bytes = mf.getBytes();
@@ -181,15 +180,69 @@ public class MainController {
 //			FileOutputStream fos = new FileOutputStream(path);
 //			fos.write(bytes);
 //			fos.close();
-			
-			PaymentVO n = new PaymentVO(uid, regdate, seq, detail, price, "img/" + regdate + "(" + seq + ")" + "_" + mf.getOriginalFilename(), memo);
+
+			PaymentVO n = new PaymentVO(uid, regdate, seq, detail, price,
+					"img/" + regdate + "(" + seq + ")" + "_" + mf.getOriginalFilename(), memo);
 			pbiz.register(n);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "redirect:/";
 		}
-		
-		
 		return "redirect:/";
 	}
+
+	@PostMapping("/mdfy")
+	public String mdfy(HttpSession s, 
+			@RequestParam(value = "num", required = false) int num,
+			@RequestParam(value = "regdate", required = false) String regdate,
+			@RequestParam(value = "detail", defaultValue = "") String detail,
+			@RequestParam(value = "price", defaultValue = "0") int price,
+			@RequestParam(value = "addfile", required = false) MultipartFile mf,
+			@RequestParam(value = "memo", defaultValue = "") String memo) {
+
+		String uid = s.getAttribute("uid").toString();
+		List<PaymentVO> l = null;
+		PaymentVO c = new PaymentVO(uid, regdate);
+		PaymentVO o = null;
+		int seq = 0;
+		
+		try {
+			o = pbiz.get(num);
+			l = pbiz.getbydate(c);
+			seq = l.size();
+			
+			if (mf == null) {
+				System.out.println("file not changed");
+				if (o.getRegdate().toString() == regdate) {
+					System.out.println("regdate not changed");
+					System.out.println(o.getRegdate() + " == " + regdate);
+					PaymentVO n = new PaymentVO(num, uid, regdate, o.getSeq(), detail, price, o.getPic(), memo);
+					pbiz.modify(n);
+				} else {
+					System.out.println("regdate changed");
+					System.out.println(o.getRegdate() + " != " + regdate);
+					String pic = "img/" + regdate + "(" + seq + ")" + "_" + o.getPic().substring(4);
+					File file = new File(UPLOAD_staitc + o.getPic());
+					File newfile = new File(UPLOAD_staitc + pic);
+					file.renameTo(newfile);
+					PaymentVO n = new PaymentVO(num, uid, regdate, seq, detail, price, pic, memo);
+					pbiz.modify(n);
+				}
+			} else {
+				System.out.println("file changed");
+				File file = new File(UPLOAD_staitc + o.getPic());
+				file.delete();
+				byte[] bytes = mf.getBytes();
+				Path path = Paths.get(UPLOAD_DIR + regdate + "(" + seq + ")" + "_" + mf.getOriginalFilename());
+				Files.write(path, bytes);
+				PaymentVO n = new PaymentVO(uid, regdate, seq, detail, price,
+						"img/" + regdate + "(" + seq + ")" + "_" + mf.getOriginalFilename(), memo);
+				pbiz.modify(n);
+			}
+		} catch (Exception e) {
+			System.out.println("Exception Occured!");
+			return "redirect:/";
+		}
+		return "redirect:/";
+	};
 }

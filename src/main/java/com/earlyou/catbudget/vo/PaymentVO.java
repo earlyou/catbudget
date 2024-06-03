@@ -50,5 +50,30 @@ public class PaymentVO {
 		this.uid = uid;
 		this.regdate = regdate;
 	}
+
+	/**
+	 * for update
+	 * @param num
+	 * @param uid
+	 * @param regdate
+	 * @param seq
+	 * @param detail
+	 * @param price
+	 * @param pic
+	 * @param memo
+	 */
+	public PaymentVO(int num, String uid, String regdate, int seq, String detail, int price, String pic, String memo) {
+		super();
+		this.num = num;
+		this.uid = uid;
+		this.regdate = regdate;
+		this.seq = seq;
+		this.detail = detail;
+		this.price = price;
+		this.pic = pic;
+		this.memo = memo;
+	}
+	
+	
 	
 }

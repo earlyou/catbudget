@@ -121,6 +121,7 @@
 			<!-- Modal body -->
 			<div class="container mt-3">
 				<form>
+					<input type="hidden" th:id="readnum+${l.num}" value="l.num">
 					<div class="mb-3 mt-3">
 						<label for="date">날짜:</label> <input type="date"
 							class="form-control" th:id="readdate+${l.num}" placeholder="날짜"
@@ -184,20 +185,23 @@
 
 			<!-- Modal body -->
 			<div class="container mt-3">
-				<form method="post" enctype="multipart/form-data"
+				<form id="mdfyform" method="post" enctype="multipart/form-data"
 					action="/catbudget/modify">
-					<input type="hidden" id="snum">
+					<input type="hidden" id="mdfynum" name="num">
 					<div class="mb-3 mt-3">
 						<label for="date">날짜:</label> <input id="mdfydate" type="date"
-							class="form-control" placeholder="날짜" name="date">
+							class="form-control" placeholder="날짜" name="regdate">
+						<div class="invalid-feedback">필수 항목입니다.</div>
 					</div>
 					<div class="mb-3">
 						<label for="detail">내역:</label> <input id="mdfydetail" type="text"
 							class="form-control" placeholder="결제 내역" name="detail">
+						<div class="invalid-feedback">필수 항목입니다.</div>
 					</div>
 					<div class="mb-3">
 						<label for="price">금액:</label> <input id="mdfyprice" type="number"
 							class="form-control" placeholder="금액" name="price">
+						<div class="invalid-feedback">필수 항목입니다.</div>
 					</div>
 
 					<div class="row">
@@ -206,8 +210,7 @@
 								<label for="mdfyfile">영수증:</label> 
 								<p></p>
 								<input type="file" class="form-control" id="mdfyfile"
-									name="mdfyfile" hidden="true"/>
-								<div class="invalid-feedback">필수 항목입니다.</div>
+									name="mdfyfile" hidden="true" accept="image/*"/>
 								<p></p>
 								<img id="mdfypreviewImage" class="img-fluid mx-auto" src=""
 									alt="미리보기">
@@ -227,7 +230,7 @@
 
 			<!-- Modal footer -->
 			<div class="modal-footer">
-				<button id="modify" type="button" class="btn btn-success">저장</button>
+				<button id="mdfy" type="button" class="btn btn-success">저장</button>
 				<button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
 			</div>
 
@@ -274,7 +277,7 @@
 								<label for="addfile">영수증:</label>
 								<p></p>
 								<input type="file" class="form-control" id="addfile"
-									name="addfile" />
+									name="addfile" accept="image/*"/>
 								<div class="invalid-feedback">필수 항목입니다.</div>
 								<p></p>
 								<img id="previewImage" class="img-fluid mx-auto" src=""
@@ -289,7 +292,7 @@
 							</div>
 						</div>
 					</div>
-					<button id="delpic" type="button" class="btn btn-primary mb-2">사진
+					<button id="delpic" type="button" class="btn btn-primary mb-2" hidden="true">사진
 						삭제</button>
 				</form>
 			</div>

@@ -3,23 +3,7 @@
  */
 
 $(document).ready(function() {
-
-	$('#addfile').on('change', function(e) {
-		const f = e.target.files[0];
-		if (f) {
-			const r = new FileReader();
-			r.onload = function(e) {
-				$('#previewImage').attr('src', e.target.result).show();
-			}
-			r.readAsDataURL(f);
-
-			$('#previewImage').prop('hidden', false);
-		} else {
-			$('#previewImage').prop('hidden', true);
-			$('#previewImage').attr('src', '').hide();
-		}
-	});
-
+	/** add */
 	$('#addbtn').click(function() {
 		$('#addform').removeClass('was-validated');
 		$('#addregdate').val('')
@@ -28,7 +12,22 @@ $(document).ready(function() {
 		$('#addfile').val('');
 		$('#addmemo').val('');
 	});
-
+	$('#addfile').on('change', function(e) {
+		const f = e.target.files[0];
+		if (f) {
+			const r = new FileReader();
+			r.onload = function(e) {
+				$('#previewImage').attr('src', e.target.result).show();
+			}
+			r.readAsDataURL(f);
+			$('#addfile').prop('hidden', true);
+			$('#delpic').prop('hidden', false);
+			$('#previewImage').prop('hidden', false);
+		} else {
+			$('#previewImage').prop('hidden', true);
+			$('#previewImage').attr('src', '').hide();
+		}
+	});
 	$('#add').click(function() {
 		if (!$('#addregdate').val() || !$('#adddetail').val() || !$('#addprice').val() || !$('#addfile').val()) {
 			if (!$('#addregdate').val()) {
@@ -58,13 +57,15 @@ $(document).ready(function() {
 			$('#addform').submit();
 		}
 	});
-
 	$('#delpic').on('click', function() {
 		$('#addfile').val('');
+		$('#addfile').prop('hidden', false);
+		$('#delpic').prop('hidden', true);
 		$('#previewImage').prop('hidden', true);
 		$('#previewImage').attr('src', '').hide();
 	});
 
+	/** modify */
 	$('.mdbtn').click(function() {
 		const readid = $(this).parent().parent().parent().parent().attr('id');
 		var readregdate = $('#readdate' + readid).val();
@@ -73,7 +74,7 @@ $(document).ready(function() {
 		var readpic = $('#readpic' + readid).attr("src");
 		var readmemo = $('#readmemo' + readid).val();
 
-		$('#snum').val(readid);
+		$('#mdfynum').val(readid);
 		$('#mdfydate').val(readregdate);
 		$('#mdfydetail').val(readdetail);
 		$('#mdfyprice').val(readprice);
@@ -85,8 +86,49 @@ $(document).ready(function() {
 		$('#mdfyfile').prop('hidden', false);
 		$('#mdfypreviewImage').prop('hidden', true);
 		$('#mdfypreviewImage').attr('src', '').hide();
-
+		$('#mdfydelpic').prop('hidden', true);
 	});
+	$('#mdfyfile').on('change', function(e) {
+		const f = e.target.files[0];
+		if (f) {
+			const r = new FileReader();
+			r.onload = function(e) {
+				$('#mdfypreviewImage').attr('src', e.target.result).show();
+			}
+			r.readAsDataURL(f);
+			$('#mdfyfile').prop('hidden', true);
+			$('#mdfydelpic').prop('hidden', false);
+			$('#mdfypreviewImage').prop('hidden', false);
+		} else {
+			$('#mdfypreviewImage').prop('hidden', true);
+			$('#mdfypreviewImage').attr('src', '').hide();
+		}
+	});
+	$('#mdfy').click(function() {
+		if (!$('#mdfydate').val() || !$('#mdfydetail').val() || !$('#mdfyprice').val()) {
+			console.log('mdfy test')
+			if (!$('#mdfydate').val()) {
+				$('#mdfyform').addClass('was-validated');
+				$('#mdfydate').attr('required', true);
+			}
+			if (!$('#mdfydetail').val()) {
+				$('#mdfyform').addClass('was-validated');
+				$('#mdfydetail').attr('required', true);
+			}
+			if (!$('#mdfyprice').val()) {
+				$('#mdfyform').addClass('was-validated');
+				$('#mdfyprice').attr('required', true);
+			}
+		} else {
+			$('#mdfyform').attr({
+				'method': 'post',
+				'enctype': 'multipart/form-data',
+				'action': '/catbudget/mdfy'
+			});
+			$('#mdfyform').submit();
+		}
+	});
+
 
 	/** URL의 param 숨기기
 	 * (ex. https://earlyou.com/catbudget/?tt=test&test1=test1 => https://earlyou.com/catbudget/) 
