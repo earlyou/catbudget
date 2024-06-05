@@ -213,23 +213,31 @@ public class MainController {
 			
 			if (mf == null) {
 				System.out.println("file not changed");
-				if (o.getRegdate().toString() == regdate) {
+				
+				if (o.getRegdate().equals(regdate)) {
 					System.out.println("regdate not changed");
-					System.out.println(o.getRegdate() + " == " + regdate);
 					PaymentVO n = new PaymentVO(num, uid, regdate, o.getSeq(), detail, price, o.getPic(), memo);
 					pbiz.modify(n);
 				} else {
 					System.out.println("regdate changed");
-					System.out.println(o.getRegdate() + " != " + regdate);
-					String pic = "img/" + regdate + "(" + seq + ")" + "_" + o.getPic().substring(4);
+					String pic = "img/" + regdate + "(" + seq + ")" + "_" + o.getPic().substring(18);
 					File file = new File(UPLOAD_staitc + o.getPic());
 					File newfile = new File(UPLOAD_staitc + pic);
 					file.renameTo(newfile);
 					PaymentVO n = new PaymentVO(num, uid, regdate, seq, detail, price, pic, memo);
 					pbiz.modify(n);
 				}
+				
 			} else {
 				System.out.println("file changed");
+				if (o.getRegdate().equals(regdate)) {
+					System.out.println("regdate not changed");
+					
+				} else {
+					System.out.println("regdate changed");
+
+				}
+				
 				File file = new File(UPLOAD_staitc + o.getPic());
 				file.delete();
 				byte[] bytes = mf.getBytes();
